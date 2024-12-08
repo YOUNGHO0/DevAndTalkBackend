@@ -6,12 +6,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -25,7 +30,6 @@ public class SecurityConfig {
 
         http
                 .csrf(CsrfConfigurer::disable)
-                .formLogin(FormLoginConfigurer::disable)
                 .headers(headerConfig ->
                         headerConfig.frameOptions(frameOptionsConfig ->
                                 frameOptionsConfig.disable())
@@ -33,12 +37,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, "/api/v1/*").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/*").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/**").permitAll()  // GET 요청은 인증 없이 접근 가능
-                        .anyRequest().authenticated()) // 나머지 요청은 인증 필요
-                .oauth2Login(configurer -> configurer.successHandler(oauthSuccessHandler)
-                        .failureHandler(oauthFailureHandler)
+                        .anyRequest().permitAll() )// GET 요청은 인증 없이 접근 가능
+                .oauth2Login(Customizer.withDefaults()
                 )
                 .exceptionHandling(configurer -> configurer.authenticationEntryPoint(new EntryPointUnauthorizedHandler(new ObjectMapper())));
+
 
         return http.build();
 
