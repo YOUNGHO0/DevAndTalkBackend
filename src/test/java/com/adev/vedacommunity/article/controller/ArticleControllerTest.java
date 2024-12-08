@@ -39,7 +39,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(RestDocumentationExtension.class)
@@ -60,8 +62,6 @@ class ArticleControllerTest {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private WebApplicationContext context;
 
     private RequestFieldsSnippet requestFieldsSnippet =  requestFields(
             fieldWithPath("title").type(JsonFieldType.STRING).description("게시판 제목"),
@@ -74,7 +74,7 @@ class ArticleControllerTest {
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(documentationConfiguration(restDocumentation))
-                //.apply(springSecurity())
+                .apply(springSecurity())
                 .build();
     }
 
@@ -102,20 +102,16 @@ class ArticleControllerTest {
     @DisplayName("정상적인 요청을 하면 글이 작성된다")
     void createArticle() throws Exception {
 
-        Assertions.assertThat(1).isEqualTo(1);
 
         ArticleCreateDto dto  = new ArticleCreateDto("test title", "test content");
         String json = new Gson().toJson(dto);
-        this.mockMvc.perform(post("/api/v1/article/")
+        this.mockMvc.perform(post("/api/v1/article")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
+                .session(getSavedUserSession())
                 .content(json)
-        ).andExpect(status().isOk()).andDo(
-                document("test/hello",
-                        operationRequestPreprocessor,
-                        operationResponsePreprocessor,
-                        requestFieldsSnippet)
-        );
+        ).andExpect(status().isOk())
+        .andDo(print());
 
     }
 

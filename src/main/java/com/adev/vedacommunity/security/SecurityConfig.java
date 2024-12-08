@@ -1,6 +1,4 @@
 package com.adev.vedacommunity.security;
-
-
 import com.adev.vedacommunity.oauth.service.CustomOauthFailureHandler;
 import com.adev.vedacommunity.oauth.service.CustomOauthSuccessHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,21 +24,21 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
         http
-                .csrf(CsrfConfigurer::disable);
-//                .headers((headerConfig) ->
-//                        headerConfig.frameOptions(frameOptionsConfig ->
-//                                frameOptionsConfig.disable()
-//                        )
-//                )
-//                .authorizeHttpRequests(request -> request
-//                        .requestMatchers(HttpMethod.POST, "/api/v1/*").hasAnyRole("USER","ADMIN")
-//                        .requestMatchers(HttpMethod.PATCH,"/api/v1/*").hasAnyRole("USER","ADMIN")
-//                        .anyRequest().permitAll())
-//                .oauth2Login(configurer -> configurer
-//                        .successHandler(oauthSuccessHandler)
+
+                .csrf(CsrfConfigurer::disable)
+                .headers((headerConfig) ->
+                        headerConfig.frameOptions(frameOptionsConfig ->
+                                frameOptionsConfig.disable()
+                        )
+                )
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(HttpMethod.POST, "/api/v1/*").hasAnyRole("USER","ADMIN")
+                        .requestMatchers(HttpMethod.PATCH,"/api/v1/*").hasAnyRole("USER","ADMIN")
+                        .anyRequest().permitAll())
+//                .oauth2Login(configurer -> configurer.successHandler(oauthSuccessHandler)
 //                        .failureHandler(oauthFailureHandler)
 //                )
-//                .exceptionHandling(configurer -> configurer.authenticationEntryPoint(new EntryPointUnauthorizedHandler(new ObjectMapper())));
+                .exceptionHandling(configurer -> configurer.authenticationEntryPoint(new EntryPointUnauthorizedHandler(new ObjectMapper())));
 
 
         return http.build();
