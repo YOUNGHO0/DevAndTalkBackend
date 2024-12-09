@@ -40,8 +40,7 @@ public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
 
     private CommunityUser handleGuest(String email){
 
-//        String nickname = nicknameGenerator.generateUniqueNickname();
-        String nickname = "test";
+        String nickname = nicknameGenerator.generateUniqueNickname();
         CommunityUser communityUser = new CommunityUser(email,nickname);
         userRepository.save(communityUser);
         return communityUser;
