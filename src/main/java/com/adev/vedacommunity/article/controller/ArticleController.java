@@ -4,6 +4,7 @@ import com.adev.vedacommunity.article.dto.request.ArticleCreateDto;
 import com.adev.vedacommunity.article.dto.request.ArticleDeleteDto;
 import com.adev.vedacommunity.article.dto.request.ArticleReadDto;
 import com.adev.vedacommunity.article.dto.request.ArticleUpdateDto;
+import com.adev.vedacommunity.article.mapper.ArticleMapper;
 import com.adev.vedacommunity.article.service.ArticleService;
 import com.adev.vedacommunity.user.entity.CommunityUser;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleController {
 
     private final ArticleService articleService;
-
+    private final ArticleMapper articleMapper;
     @PostMapping("")
     public ResponseEntity createArticle (ArticleCreateDto dto, @AuthenticationPrincipal CommunityUser communityUser) {
         articleService.write(dto.getTitle(),dto.getContent(),communityUser);
