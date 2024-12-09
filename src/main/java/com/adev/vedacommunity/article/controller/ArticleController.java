@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/article")
@@ -22,24 +24,30 @@ public class ArticleController {
     private final ArticleMapper articleMapper;
     @PostMapping("")
     public ResponseEntity createArticle (ArticleCreateDto dto, @AuthenticationPrincipal CommunityUser communityUser) {
-        articleService.write(dto.getTitle(),dto.getContent(),communityUser);
+
+        Article article = articleMapper.toArticle(dto, communityUser);
+        articleService.write(article);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("")
-    public ResponseEntity getArticle (ArticleReadDto readDto) {
-        articleService.read(readDto.getArticleId());
-        return ResponseEntity.ok().build();
+    public ResponseEntity getArticle (@RequestBody ArticleReadDto readDto) {
+        Optional<Article> read = articleService.read(readDto.getArticleId());
+        if (read.isPresent()) {
+            return ResponseEntity.ok(articleMapper.toArticleReadDto(read.get()));
+        }
+
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("")
-    public ResponseEntity updateArticle(ArticleUpdateDto dto, @AuthenticationPrincipal CommunityUser communityUser ){
+    public ResponseEntity updateArticle(@RequestBody ArticleUpdateDto dto, @AuthenticationPrincipal CommunityUser communityUser ){
         articleService.update(dto.getId(), dto.getTitle(),dto.getContent(),communityUser);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("")
-    public ResponseEntity deleteArticle(ArticleDeleteDto dto, CommunityUser communityUser){
+    public ResponseEntity deleteArticle(@RequestBody ArticleDeleteDto dto, CommunityUser communityUser){
         articleService.delete(dto.getDeleteId(),communityUser);
         return ResponseEntity.ok().build();
     }
