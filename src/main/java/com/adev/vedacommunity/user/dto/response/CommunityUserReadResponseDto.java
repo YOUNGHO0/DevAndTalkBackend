@@ -1,13 +1,15 @@
 package com.adev.vedacommunity.user.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-public class UserReadResponseDto {
+@AllArgsConstructor
+public class CommunityUserReadResponseDto {
 
     private long id;
     private String email;
     private String nickname;
-
     long vedaOrder;
+    CompanyReadResponseDto company;
 }
