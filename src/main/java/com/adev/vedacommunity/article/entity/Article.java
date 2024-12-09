@@ -2,8 +2,10 @@ package com.adev.vedacommunity.article.entity;
 
 import com.adev.vedacommunity.user.entity.CommunityUser;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Article {
 
     protected Article() {}
