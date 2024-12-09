@@ -1,8 +1,5 @@
 package com.adev.vedacommunity.article.service;
 
-import com.adev.vedacommunity.article.dto.ArticleCreateDto;
-import com.adev.vedacommunity.article.dto.ArticleReadDto;
-import com.adev.vedacommunity.article.dto.ArticleUpdateDto;
 import com.adev.vedacommunity.article.entity.Article;
 import com.adev.vedacommunity.article.repository.ArticleRepository;
 import com.adev.vedacommunity.user.entity.CommunityUser;
@@ -22,9 +19,11 @@ public class ArticleService {
         articleRepository.save(article);
 
     }
-
+    public void write(Article article){
+        articleRepository.save(article);
+    }
     public Optional<Article> read(long id){
-        return articleRepository.findById(id);
+        return articleRepository.findArticleWithAuthorById(id);
     }
 
 
