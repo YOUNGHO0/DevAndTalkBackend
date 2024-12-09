@@ -4,6 +4,7 @@ import com.adev.vedacommunity.article.dto.request.ArticleCreateDto;
 import com.adev.vedacommunity.article.dto.request.ArticleDeleteDto;
 import com.adev.vedacommunity.article.dto.request.ArticleReadDto;
 import com.adev.vedacommunity.article.dto.request.ArticleUpdateDto;
+import com.adev.vedacommunity.article.entity.Article;
 import com.adev.vedacommunity.article.mapper.ArticleMapper;
 import com.adev.vedacommunity.article.service.ArticleService;
 import com.adev.vedacommunity.user.entity.CommunityUser;
