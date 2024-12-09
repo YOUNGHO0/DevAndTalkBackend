@@ -1,9 +1,9 @@
 package com.adev.vedacommunity.article.controller;
 
-import com.adev.vedacommunity.article.dto.ArticleCreateDto;
-import com.adev.vedacommunity.article.dto.ArticleDeleteDto;
-import com.adev.vedacommunity.article.dto.ArticleReadDto;
-import com.adev.vedacommunity.article.dto.ArticleUpdateDto;
+import com.adev.vedacommunity.article.dto.request.ArticleCreateDto;
+import com.adev.vedacommunity.article.dto.request.ArticleDeleteDto;
+import com.adev.vedacommunity.article.dto.request.ArticleReadDto;
+import com.adev.vedacommunity.article.dto.request.ArticleUpdateDto;
 import com.adev.vedacommunity.article.service.ArticleService;
 import com.adev.vedacommunity.user.entity.CommunityUser;
 import lombok.RequiredArgsConstructor;
