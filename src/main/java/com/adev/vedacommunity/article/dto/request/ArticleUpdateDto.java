@@ -1,4 +1,4 @@
-package com.adev.vedacommunity.article.dto;
+package com.adev.vedacommunity.article.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
