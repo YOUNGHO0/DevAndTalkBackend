@@ -47,7 +47,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("")
-    public ResponseEntity deleteArticle(@RequestBody ArticleDeleteDto dto, CommunityUser communityUser){
+    public ResponseEntity deleteArticle(@RequestBody ArticleDeleteDto dto, @AuthenticationPrincipal CommunityUser communityUser){
         articleService.delete(dto.getDeleteId(),communityUser);
         return ResponseEntity.ok().build();
     }
