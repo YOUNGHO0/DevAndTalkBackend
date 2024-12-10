@@ -1,4 +1,4 @@
-package com.adev.vedacommunity.user.admin.dto;
+package com.adev.vedacommunity.admin.dto;
 
 import com.adev.vedacommunity.user.dto.response.CompanyReadResponseDto;
 import lombok.AllArgsConstructor;
