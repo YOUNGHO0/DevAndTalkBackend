@@ -10,6 +10,7 @@ import java.util.Collection;
 
 @Entity
 @Getter
+@Inheritance(strategy = InheritanceType.JOINED) // 상속 관계를 JPA로 처리
 public class CommunityUser extends BaseTimeEntity {
     @Transient
     protected Collection<GrantedAuthority> authorities;
