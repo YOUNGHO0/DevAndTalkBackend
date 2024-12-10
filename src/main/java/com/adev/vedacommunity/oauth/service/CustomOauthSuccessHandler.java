@@ -1,7 +1,7 @@
 package com.adev.vedacommunity.oauth.service;
 
 import com.adev.vedacommunity.user.entity.CommunityUser;
-import com.adev.vedacommunity.user.repository.UserRepository;
+import com.adev.vedacommunity.user.repository.CommunityUserRepository;
 import com.adev.vedacommunity.user.service.NicknameGenerator;
 import com.adev.vedacommunity.user.service.UserService;
 import jakarta.servlet.ServletException;
@@ -21,7 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final UserRepository userRepository;
+    private final CommunityUserRepository communityUserRepository;
     private final UserService userService;
     private final NicknameGenerator nicknameGenerator;
 
@@ -32,7 +32,7 @@ public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String email = attributes.get("email").toString();
 
-        Optional<CommunityUser> optionalUser = userRepository.findByEmail(email);
+        Optional<CommunityUser> optionalUser = communityUserRepository.findByEmail(email);
         CommunityUser updatedCommunityUser = optionalUser.isEmpty() ? handleGuest(email): handleUser(optionalUser.get()) ;
         userService.setSession(request, updatedCommunityUser);
 
@@ -42,7 +42,7 @@ public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
 
         String nickname = nicknameGenerator.generateUniqueNickname();
         CommunityUser communityUser = new CommunityUser(email,nickname);
-        userRepository.save(communityUser);
+        communityUserRepository.save(communityUser);
         return communityUser;
     }
     private CommunityUser handleUser(CommunityUser communityUser){

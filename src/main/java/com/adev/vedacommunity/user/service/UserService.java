@@ -1,7 +1,7 @@
 package com.adev.vedacommunity.user.service;
 
 import com.adev.vedacommunity.user.entity.CommunityUser;
-import com.adev.vedacommunity.user.repository.UserRepository;
+import com.adev.vedacommunity.user.repository.CommunityUserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    UserRepository userRepository;
+    CommunityUserRepository communityUserRepository;
 
 
 
