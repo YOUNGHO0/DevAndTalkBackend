@@ -8,7 +8,7 @@ import com.adev.vedacommunity.article.entity.Article;
 import com.adev.vedacommunity.article.mapper.ArticleMapper;
 import com.adev.vedacommunity.article.repository.ArticleRepository;
 import com.adev.vedacommunity.user.entity.CommunityUser;
-import com.adev.vedacommunity.user.repository.UserRepository;
+import com.adev.vedacommunity.user.repository.CommunityUserRepository;
 import com.adev.vedacommunity.user.service.UserService;
 import com.google.gson.Gson;
 import jakarta.persistence.EntityManager;
@@ -64,7 +64,7 @@ class ArticleControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private CommunityUserRepository communityUserRepository;
     @Autowired
     private ArticleMapper articleMapper;
     @Autowired
@@ -93,7 +93,7 @@ class ArticleControllerTest {
 
 
         CommunityUser user = new CommunityUser("test@gmail.com", "testNickname");
-        CommunityUser savedUser = userRepository.save(user);
+        CommunityUser savedUser = communityUserRepository.save(user);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         UsernamePasswordAuthenticationToken authentication =
@@ -111,7 +111,7 @@ class ArticleControllerTest {
 
     CommunityUser getTestUser(){
 
-        return userRepository.findByEmail("test@gmail.com")
+        return communityUserRepository.findByEmail("test@gmail.com")
                 .orElseThrow(() -> new RuntimeException("No User"));
 
     }
