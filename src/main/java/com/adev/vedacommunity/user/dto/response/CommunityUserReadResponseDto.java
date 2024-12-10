@@ -8,7 +8,6 @@ import lombok.Getter;
 public class CommunityUserReadResponseDto {
 
     private long id;
-    private String email;
     private String nickname;
     long vedaOrder;
     CompanyReadResponseDto company;
