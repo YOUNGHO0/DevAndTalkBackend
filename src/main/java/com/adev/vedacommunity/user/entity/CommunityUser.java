@@ -11,15 +11,21 @@ import java.util.Collection;
 @Entity
 @Getter
 public class CommunityUser extends BaseTimeEntity {
-
+    @Transient
+    protected Collection<GrantedAuthority> authorities;
     // 기본 생성자 (JPA에서 필수)
     protected CommunityUser() {
+
     }
-    
+
     public CommunityUser(String email, String nickName){
+
         this.email = email;
         this.vedaOrder = 1;
         this.company = null;
+
+        authorities = new ArrayList<>();
+        authorities.add((GrantedAuthority) () -> "ROLE_USER");
 
     }
 
@@ -54,8 +60,6 @@ public class CommunityUser extends BaseTimeEntity {
 
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add((GrantedAuthority) () -> "ROLE_USER");
         return authorities;
     }
 
