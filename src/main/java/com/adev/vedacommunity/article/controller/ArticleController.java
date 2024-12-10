@@ -6,9 +6,12 @@ import com.adev.vedacommunity.article.dto.request.ArticleReadDto;
 import com.adev.vedacommunity.article.dto.request.ArticleUpdateDto;
 import com.adev.vedacommunity.article.entity.Article;
 import com.adev.vedacommunity.article.mapper.ArticleMapper;
+import com.adev.vedacommunity.article.repository.ArticleRepository;
 import com.adev.vedacommunity.article.service.ArticleService;
 import com.adev.vedacommunity.user.entity.CommunityUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final ArticleMapper articleMapper;
+    private final ArticleRepository articleRepository;
     @PostMapping("")
     public ResponseEntity createArticle (ArticleCreateDto dto, @AuthenticationPrincipal CommunityUser communityUser) {
 
@@ -38,6 +42,12 @@ public class ArticleController {
         }
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity getArticle(Pageable pageable){
+        Page<Article> list = articleRepository.getArticleList(pageable);
+        return ResponseEntity.ok().body(articleMapper.toReadPageDto(list));
     }
 
     @PatchMapping("")
