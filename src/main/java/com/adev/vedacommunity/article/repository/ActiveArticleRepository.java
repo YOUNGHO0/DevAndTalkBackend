@@ -10,9 +10,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface ActiveArticleRepository extends JpaRepository< ActiveArticle, Long> {
+public interface ActiveArticleRepository extends JpaRepository<ActiveArticle, Long> {
 
-    @Query("SELECT a FROM Article a JOIN FETCH a.author auth LEFT JOIN FETCH auth.company WHERE a.id = :articleId")
+    @Query("SELECT a FROM ActiveArticle a JOIN FETCH a.author auth LEFT JOIN FETCH auth.company WHERE a.id = :articleId")
     Optional<ActiveArticle> findArticleWithAuthorById(@Param("articleId") Long articleId);
 
     @Query("SELECT a FROM Article a JOIN FETCH a.author auth LEFT JOIN FETCH auth.company")
