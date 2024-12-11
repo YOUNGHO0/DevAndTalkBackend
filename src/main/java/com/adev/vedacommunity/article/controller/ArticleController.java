@@ -54,13 +54,13 @@ public class ArticleController {
     }
 
     @PatchMapping("")
-    public ResponseEntity updateArticle(@RequestBody ArticleUpdateDto dto, @AuthenticationPrincipal CommunityUser communityUser){
+    public ResponseEntity updateArticle(@RequestBody ArticleUpdateDto dto, @AuthenticationPrincipal CommunityUserView communityUser){
         articleService.update(dto.getId(), dto.getTitle(),dto.getContent(), communityUser);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("")
-    public ResponseEntity deleteArticle(@RequestBody ArticleDeleteDto dto, @AuthenticationPrincipal CommunityUser communityUser){
+    public ResponseEntity deleteArticle(@RequestBody ArticleDeleteDto dto, @AuthenticationPrincipal CommunityUserView communityUser){
         articleService.delete(dto.getDeleteId(), communityUser);
         return ResponseEntity.ok().build();
     }
