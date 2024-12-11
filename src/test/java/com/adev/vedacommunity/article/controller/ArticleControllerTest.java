@@ -56,7 +56,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("local")
 @AutoConfigureRestDocs
-@Transactional
 class ArticleControllerTest {
 
 
@@ -98,10 +97,11 @@ class ArticleControllerTest {
 
         CommunityUser user = new CommunityUser("test@gmail.com", "testNickname");
         CommunityUser savedUser = communityUserRepository.save(user);
+        CommunityUserView communityUserView = communityUserViewRepository.findById(savedUser.getId()).get();
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(savedUser, null,user.getAuthorities());
+                new UsernamePasswordAuthenticationToken(communityUserView, null,communityUserView.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(authentication);
@@ -123,6 +123,7 @@ class ArticleControllerTest {
 
     @Test
     @DisplayName("정상적인 요청을 하면 글이 작성된다")
+    @Transactional
     void createArticle() throws Exception {
         getSavedUserSession();
 
@@ -143,6 +144,7 @@ class ArticleControllerTest {
 
     @Test
     @DisplayName("올바른 요청은 게시글을 반환한다.")
+    @Transactional
     void getArticle() throws Exception {
 
         getSavedUserSession();
@@ -171,6 +173,7 @@ class ArticleControllerTest {
 
     @Test
     @DisplayName("올바른 요청은 수정된다")
+    @Transactional
     void updateArticle() throws Exception {
         MockHttpSession savedUserSession = getSavedUserSession();
         CommunityUserView testUser = getTestUser();
@@ -199,6 +202,7 @@ class ArticleControllerTest {
 
     @Test
     @DisplayName("올바른 삭제요청이 들어오면 삭제된다")
+    @Transactional
     void deleteArticle() throws Exception {
         MockHttpSession savedUserSession = getSavedUserSession();
         CommunityUserView testUser = getTestUser();
@@ -216,6 +220,20 @@ class ArticleControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(document("articleDelete/success",
+                        operationRequestPreprocessor,
+                        operationResponsePreprocessor
+                ));
+
+
+        ArticleReadDto readDto = new ArticleReadDto(saved.getId());
+        String newjson = new Gson().toJson(readDto);
+        this.mockMvc.perform(get("/api/v1/article")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(newjson)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("articleRead/test",
                         operationRequestPreprocessor,
                         operationResponsePreprocessor
                 ));
