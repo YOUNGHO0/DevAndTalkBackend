@@ -1,6 +1,7 @@
 package com.adev.vedacommunity.article.entity;
 
 import com.adev.vedacommunity.user.entity.CommunityUser;
+import com.adev.vedacommunity.user.entity.CommunityUserView;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -10,12 +11,11 @@ public class Article {
 
     protected Article() {}
 
-    public Article(String title, String content, CommunityUser author) {
+    public Article(String title, String content, CommunityUserView author) {
 
         this.title = title;
         this.content = content;
         this.author = author;
-        this.viewCount = 0;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,18 +23,24 @@ public class Article {
 
     String title;
     String content;
-    long viewCount;
+    long viewCount = 0;
+    boolean isDeleted = false;
 
     @ManyToOne
-    CommunityUser author;
+    CommunityUserView author;
 
+    public boolean canCreate(){
+        return true;
+    }
+
+    public boolean canUpdate(String title, String content, CommunityUser author ){
+        if(!author.equals(this.author))
+            throw new RuntimeException("Author does not match");
+        return true;
+    }
 
 
     public void update(String title, String content, CommunityUser author ) {
-
-        if(!author.equals(this.author))
-            throw new RuntimeException("Author does not match");
-
         this.title = title;
         this.content = content;
     }
@@ -43,5 +49,8 @@ public class Article {
         if(!author.equals(this.author)) throw new RuntimeException("Author does not match");
 
         return true;
+    }
+    public void delete(){
+        this.isDeleted = true;
     }
 }

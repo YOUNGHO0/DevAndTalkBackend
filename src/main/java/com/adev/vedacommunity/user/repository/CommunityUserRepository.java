@@ -8,6 +8,5 @@ import java.util.Optional;
 public interface CommunityUserRepository extends JpaRepository<CommunityUser, Long> {
 
 
-    Optional<CommunityUser> findByEmail(String email);
 
 }

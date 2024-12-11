@@ -8,7 +8,9 @@ import com.adev.vedacommunity.article.entity.Article;
 import com.adev.vedacommunity.article.mapper.ArticleMapper;
 import com.adev.vedacommunity.article.repository.ArticleRepository;
 import com.adev.vedacommunity.user.entity.CommunityUser;
+import com.adev.vedacommunity.user.entity.CommunityUserView;
 import com.adev.vedacommunity.user.repository.CommunityUserRepository;
+import com.adev.vedacommunity.user.repository.CommunityUserViewRepository;
 import com.adev.vedacommunity.user.service.UserService;
 import com.google.gson.Gson;
 import jakarta.persistence.EntityManager;
@@ -66,6 +68,8 @@ class ArticleControllerTest {
     @Autowired
     private CommunityUserRepository communityUserRepository;
     @Autowired
+    private CommunityUserViewRepository communityUserViewRepository;
+    @Autowired
     private ArticleMapper articleMapper;
     @Autowired
     private UserService userService;
@@ -109,10 +113,11 @@ class ArticleControllerTest {
         return mockHttpSession;
     }
 
-    CommunityUser getTestUser(){
+    CommunityUserView getTestUser(){
 
-        return communityUserRepository.findByEmail("test@gmail.com")
+        return communityUserViewRepository.findByEmail("test@gmail.com")
                 .orElseThrow(() -> new RuntimeException("No User"));
+
 
     }
 
@@ -146,7 +151,7 @@ class ArticleControllerTest {
                 fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시판 번호")
         );
 
-        CommunityUser user = getTestUser();
+        CommunityUserView user = getTestUser();
         ArticleCreateDto dto = new ArticleCreateDto("testtitle", "test content");
         Article saved = articleRepository.save(articleMapper.toArticle(dto, user));
 
@@ -168,7 +173,7 @@ class ArticleControllerTest {
     @DisplayName("올바른 요청은 수정된다")
     void updateArticle() throws Exception {
         MockHttpSession savedUserSession = getSavedUserSession();
-        CommunityUser testUser = getTestUser();
+        CommunityUserView testUser = getTestUser();
         ArticleCreateDto dto = new ArticleCreateDto("testtitle", "test content");
         Article saved = articleRepository.save(articleMapper.toArticle(dto,testUser));
 
@@ -196,7 +201,7 @@ class ArticleControllerTest {
     @DisplayName("올바른 삭제요청이 들어오면 삭제된다")
     void deleteArticle() throws Exception {
         MockHttpSession savedUserSession = getSavedUserSession();
-        CommunityUser testUser = getTestUser();
+        CommunityUserView testUser = getTestUser();
         ArticleCreateDto dto = new ArticleCreateDto("testtitle", "test content");
         Article saved = articleRepository.save(articleMapper.toArticle(dto,testUser));
 

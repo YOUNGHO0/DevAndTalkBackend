@@ -1,8 +1,11 @@
 package com.adev.vedacommunity.article.service;
 
+import com.adev.vedacommunity.article.entity.ActiveArticle;
 import com.adev.vedacommunity.article.entity.Article;
+import com.adev.vedacommunity.article.repository.ActiveArticleRepository;
 import com.adev.vedacommunity.article.repository.ArticleRepository;
 import com.adev.vedacommunity.user.entity.CommunityUser;
+import com.adev.vedacommunity.user.entity.CommunityUserView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +16,8 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    public void write(String title, String content, CommunityUser user){
+    private final ActiveArticleRepository activeArticleRepository;
+    public void write(String title, String content, CommunityUserView user){
 
         Article article = new Article(title, content, user);
         articleRepository.save(article);
@@ -22,8 +26,8 @@ public class ArticleService {
     public void write(Article article){
         articleRepository.save(article);
     }
-    public Optional<Article> read(long id){
-        return articleRepository.findArticleWithAuthorById(id);
+    public Optional<ActiveArticle> read(long id){
+        return activeArticleRepository.findArticleWithAuthorById(id);
     }
 
 

@@ -13,10 +13,7 @@ import java.util.Optional;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-    @Query("SELECT a FROM Article a JOIN FETCH a.author auth LEFT JOIN FETCH auth.company WHERE a.id = :articleId")
-    Optional<Article> findArticleWithAuthorById(@Param("articleId") Long articleId);
 
-    @Query("SELECT a FROM Article a JOIN FETCH a.author auth LEFT JOIN FETCH auth.company")
-    Page<Article> getArticleList(Pageable pageable);
+
 
 }

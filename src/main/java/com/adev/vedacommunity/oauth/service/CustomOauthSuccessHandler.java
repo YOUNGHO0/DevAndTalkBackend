@@ -1,7 +1,9 @@
 package com.adev.vedacommunity.oauth.service;
 
 import com.adev.vedacommunity.user.entity.CommunityUser;
+import com.adev.vedacommunity.user.entity.CommunityUserView;
 import com.adev.vedacommunity.user.repository.CommunityUserRepository;
+import com.adev.vedacommunity.user.repository.CommunityUserViewRepository;
 import com.adev.vedacommunity.user.service.NicknameGenerator;
 import com.adev.vedacommunity.user.service.UserService;
 import jakarta.servlet.ServletException;
@@ -22,6 +24,7 @@ import java.util.Optional;
 public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
 
     private final CommunityUserRepository communityUserRepository;
+    private final CommunityUserViewRepository communityUserViewRepository;
     private final UserService userService;
     private final NicknameGenerator nicknameGenerator;
 
@@ -32,21 +35,21 @@ public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String email = attributes.get("email").toString();
 
-        Optional<CommunityUser> optionalUser = communityUserRepository.findByEmail(email);
-        CommunityUser updatedCommunityUser = optionalUser.isEmpty() ? handleGuest(email): handleUser(optionalUser.get()) ;
+        Optional<CommunityUserView> optionalUser = communityUserViewRepository.findByEmail(email);
+        CommunityUserView updatedCommunityUser = optionalUser.isEmpty() ? handleGuest(email): handleUser(optionalUser.get()) ;
         userService.setSession(request, updatedCommunityUser);
 
     }
 
-    private CommunityUser handleGuest(String email){
+    private CommunityUserView handleGuest(String email){
 
         String nickname = nicknameGenerator.generateUniqueNickname();
         CommunityUser communityUser = new CommunityUser(email,nickname);
         communityUserRepository.save(communityUser);
-        return communityUser;
+        return communityUserViewRepository.findByEmail(communityUser.getEmail()).get();
     }
-    private CommunityUser handleUser(CommunityUser communityUser){
-        return communityUser;
+    private CommunityUserView handleUser(CommunityUserView communityUserView){
+        return communityUserView;
     }
 
 }

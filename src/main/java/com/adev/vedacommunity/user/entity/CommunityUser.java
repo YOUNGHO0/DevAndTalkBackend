@@ -19,12 +19,17 @@ public class CommunityUser extends BaseTimeEntity {
 
     }
 
+    public String canTest(CommunityUser user){
+       return  user.getNickname();
+
+    }
+
     public CommunityUser(String email, String nickName){
 
         this.email = email;
         this.vedaOrder = 1;
         this.company = null;
-
+        this.isDeleted = false;
         authorities = new ArrayList<>();
         authorities.add((GrantedAuthority) () -> "ROLE_USER");
 
@@ -42,8 +47,8 @@ public class CommunityUser extends BaseTimeEntity {
     private long id;
     private String email;
     private String nickname;
-
-    @ManyToOne
+    protected boolean isDeleted;
+    @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
 
     long vedaOrder;

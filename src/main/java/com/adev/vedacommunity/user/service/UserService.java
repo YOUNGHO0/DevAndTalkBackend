@@ -1,6 +1,7 @@
 package com.adev.vedacommunity.user.service;
 
 import com.adev.vedacommunity.user.entity.CommunityUser;
+import com.adev.vedacommunity.user.entity.CommunityUserView;
 import com.adev.vedacommunity.user.repository.CommunityUserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,7 +20,7 @@ public class UserService {
 
 
 
-    public void setSession(HttpServletRequest request, CommunityUser communityUser){
+    public void setSession(HttpServletRequest request, CommunityUserView communityUser){
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(communityUser, null, communityUser.getAuthorities());

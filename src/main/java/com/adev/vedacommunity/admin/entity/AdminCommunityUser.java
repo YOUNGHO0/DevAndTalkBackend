@@ -1,17 +1,23 @@
 package com.adev.vedacommunity.admin.entity;
 
 import com.adev.vedacommunity.user.entity.CommunityUser;
-import com.adev.vedacommunity.user.entity.Company;
 import jakarta.persistence.Entity;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+@Getter
 @Entity
 public class AdminCommunityUser extends CommunityUser {
 
     protected AdminCommunityUser() {
+
+    }
+
+    @Override
+    public String canTest(CommunityUser user) {
+
+        AdminCommunityUser test = (AdminCommunityUser) user;
+        return test.getAdminUserName();
 
     }
 

@@ -9,10 +9,6 @@ spring:
       maxFileSize: 3MB # 파일 하나의 최대 크기
       maxRequestSize: 30MB  # 한 번에 최대 업로드 가능 용량
 
-  h2:
-    console:
-      enabled: true
-
   security:
     oauth2:
       client:
@@ -22,17 +18,24 @@ spring:
             client-secret: ${OAUTH_GOOGLE_CLIENT_SECRET}
             scope: email
 
-
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:account;MODE=MySQL;
-    username: SA
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:account;MODE=MySQL;
+#    username: SA
+#    password:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
-
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
 
 
 ---
@@ -61,7 +64,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     show-sql: true
 
 

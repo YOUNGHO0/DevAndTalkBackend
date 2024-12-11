@@ -1,15 +1,14 @@
 package com.adev.vedacommunity.user.service;
 
+import com.adev.vedacommunity.user.entity.CommunityUser;
 import com.adev.vedacommunity.user.repository.CommunityUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+
+import java.util.*;
 import java.util.stream.Collectors;
-import com.adev.vedacommunity.user.entity.CommunityUser;
+
 @Service
 @RequiredArgsConstructor
 public class NicknameGenerator {
@@ -34,9 +33,12 @@ public class NicknameGenerator {
         nouns = List.of(nounStrings.split(" "));
 
         // 이미 사용된 닉네임을 로드
-        usedNicknames.addAll(communityUserRepository.findAll()
+        usedNicknames.addAll((Collection<? extends String>) communityUserRepository.findAll()
                 .stream()
-                .map(CommunityUser::getNickname)
+                .map(o -> {
+                    CommunityUser tr = (CommunityUser) o;
+                    return tr.getNickname();
+                })
                 .collect(Collectors.toSet()));
     }
 

@@ -3,7 +3,9 @@ package com.adev.vedacommunity.admin.controller;
 import com.adev.vedacommunity.admin.dto.AdminUserListResponseDto;
 import com.adev.vedacommunity.mapper.AdminMapper;
 import com.adev.vedacommunity.user.entity.CommunityUser;
+import com.adev.vedacommunity.user.entity.CommunityUserView;
 import com.adev.vedacommunity.user.repository.CommunityUserRepository;
+import com.adev.vedacommunity.user.repository.CommunityUserViewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final CommunityUserRepository communityUserRepository;
+    private final CommunityUserViewRepository communityUserRepository;
     private final AdminMapper adminMapper;
     @GetMapping("")
     public ResponseEntity findAllUser(@AuthenticationPrincipal CommunityUser user, Pageable pageable) {
 
-        Page<CommunityUser> all = communityUserRepository.findAll(pageable);
+        Page<CommunityUserView> all = communityUserRepository.findAll(pageable);
         Page<AdminUserListResponseDto> adminPageDto = adminMapper.toAdminPageReadDto(all);
 
 
