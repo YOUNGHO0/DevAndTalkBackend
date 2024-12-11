@@ -1,6 +1,7 @@
 package com.adev.vedacommunity.article.entity;
 
 import com.adev.vedacommunity.user.entity.CommunityUser;
+import com.adev.vedacommunity.user.entity.CommunityUserView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.Immutable;
@@ -17,8 +18,8 @@ public class ActiveArticle {
     String title;
     String content;
     long viewCount = 0;
-//
-//    @ManyToOne
-//    CommunityUser author;
+
+    @ManyToOne
+    CommunityUserView author;
 
 }
