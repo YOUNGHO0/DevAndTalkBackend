@@ -33,20 +33,20 @@ public class Article {
         return true;
     }
 
-    public boolean canUpdate(String title, String content, CommunityUser author ){
+    public boolean canUpdate(String title, String content, CommunityUserView author ){
         if(!author.equals(this.author))
             throw new RuntimeException("Author does not match");
         return true;
     }
 
 
-    public void update(String title, String content, CommunityUser author ) {
+    public void update(String title, String content, CommunityUserView author ) {
         this.title = title;
         this.content = content;
     }
 
-    public boolean canDelete(CommunityUser author){
-        if(!author.equals(this.author)) throw new RuntimeException("Author does not match");
+    public boolean canDelete(CommunityUserView author){
+        if(!author.equals(this.author)) throw new RuntimeException("Author does not match current : "+ this.author.getId() + " " + "extra :" +author.getId());
 
         return true;
     }
