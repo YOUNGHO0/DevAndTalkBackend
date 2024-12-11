@@ -32,10 +32,18 @@ public class ArticleService {
 
 
     public void update(long id,String title, String content, CommunityUserView user) {
-        articleRepository.findById(id).ifPresent((article)->{ article.update(title, content, user);});
+        articleRepository.findById(id).ifPresent((article)-> {
+        if(article.canUpdate(title, content, user)){
+            article.update(title,content,user);
+        }
+     });
     }
 
     public void delete(long id, CommunityUserView user){
-        articleRepository.findById(id).ifPresent((article)->{ if(article.canDelete(user)) articleRepository.delete(article);});
+        articleRepository.findById(id).ifPresent(article -> {
+            if(article.canDelete(user)){
+                article.delete();
+            }
+        });
     }
 }
