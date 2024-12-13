@@ -1,4 +1,4 @@
-package com.adev.vedacommunity.mapper;
+package com.adev.vedacommunity.admin.mapper;
 
 import com.adev.vedacommunity.admin.dto.AdminUserListResponseDto;
 import com.adev.vedacommunity.user.entity.CommunityUser;
