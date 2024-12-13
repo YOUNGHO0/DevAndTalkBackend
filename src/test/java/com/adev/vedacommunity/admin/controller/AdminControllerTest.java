@@ -61,9 +61,6 @@ class AdminControllerTest extends BaseRestDocsTest {
     @DisplayName("관리자가 접속하면 사용자 목록을 반환한다")
     public void test() throws Exception {
 
-
-
-
         MockHttpSession session = setAdminUser();
 
         for(int i =0; i<20; i++){
@@ -74,7 +71,7 @@ class AdminControllerTest extends BaseRestDocsTest {
         System.out.println(communityUserViewRepository.findAll().size());
         System.out.println(communityUserRepository.findAll().size());
 
-        this.mockMvc.perform(get("/api/v1/user")
+        this.mockMvc.perform(get("/api/v1/admin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .session(session)
