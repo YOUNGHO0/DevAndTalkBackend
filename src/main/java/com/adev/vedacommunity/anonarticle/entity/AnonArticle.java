@@ -1,7 +1,11 @@
 package com.adev.vedacommunity.anonarticle.entity;
+
 import com.adev.vedacommunity.user.entity.CommunityUserView;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+
+import java.beans.ConstructorProperties;
 
 @Entity
 @Getter
@@ -38,7 +42,7 @@ public class AnonArticle {
     }
 
 
-    public void update(String title, String content, CommunityUserView author ) {
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
     }
