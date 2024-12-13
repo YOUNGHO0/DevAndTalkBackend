@@ -224,6 +224,8 @@ class ArticleControllerTest {
                         operationResponsePreprocessor
                 ));
 
+        em.flush();
+        em.clear();
 
         ArticleReadDto readDto = new ArticleReadDto(saved.getId());
         String newjson = new Gson().toJson(readDto);
@@ -232,7 +234,7 @@ class ArticleControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(newjson)
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andDo(document("articleRead/test",
                         operationRequestPreprocessor,
                         operationResponsePreprocessor
