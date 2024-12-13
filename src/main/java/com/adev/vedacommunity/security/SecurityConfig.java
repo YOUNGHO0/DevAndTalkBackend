@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/*").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/*").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/*").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/v1/admin/*").hasRole("ADMIN")
                         .anyRequest().permitAll() )// GET 요청은 인증 없이 접근 가능
                 .oauth2Login(Customizer.withDefaults()
                 )
