@@ -6,6 +6,7 @@ import com.adev.vedacommunity.article.repository.ActiveArticleRepository;
 import com.adev.vedacommunity.article.repository.ArticleRepository;
 import com.adev.vedacommunity.user.entity.CommunityUser;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
