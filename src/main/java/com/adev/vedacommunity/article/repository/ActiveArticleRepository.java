@@ -15,6 +15,6 @@ public interface ActiveArticleRepository extends JpaRepository<ActiveArticle, Lo
     @Query("SELECT a FROM ActiveArticle a JOIN FETCH a.author auth LEFT JOIN FETCH auth.company WHERE a.id = :articleId")
     Optional<ActiveArticle> findArticleWithAuthorById(@Param("articleId") Long articleId);
 
-    @Query("SELECT a FROM Article a JOIN FETCH a.author auth LEFT JOIN FETCH auth.company")
+    @Query("SELECT a FROM ActiveArticle a JOIN FETCH a.author auth LEFT JOIN FETCH auth.company")
     Page<ActiveArticle> getArticleList(Pageable pageable);
 }
