@@ -212,6 +212,9 @@ class ArticleControllerTest {
         ArticleDeleteDto deleteDto = new ArticleDeleteDto(saved.getId());
         String json = new Gson().toJson(deleteDto);
 
+        em.flush();
+        em.clear();
+
         this.mockMvc.perform(delete("/api/v1/article")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -234,7 +237,7 @@ class ArticleControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(newjson)
                 )
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(document("articleRead/test",
                         operationRequestPreprocessor,
                         operationResponsePreprocessor
