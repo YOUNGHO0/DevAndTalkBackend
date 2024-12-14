@@ -1,6 +1,7 @@
 package com.adev.vedacommunity.user.entity;
 
 import com.adev.vedacommunity.logging.BaseTimeEntity;
+import com.adev.vedacommunity.user.role.CommunityUserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -51,6 +52,9 @@ public class CommunityUser extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
 
+    @Enumerated(EnumType.STRING)
+    private CommunityUserRole role = CommunityUserRole.ROLE_TEMP;
+
     long vedaOrder;
 
     // ToString 메서드 (디버깅용)
@@ -64,10 +68,14 @@ public class CommunityUser extends BaseTimeEntity {
                 '}';
     }
 
-
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+    public void changeRoleTo(CommunityUserRole role){
+        this.role = role;
     }
 
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return new ArrayList<GrantedAuthority>() {{
+            add(() -> role.toString());
+        }};
+    }
 
 }

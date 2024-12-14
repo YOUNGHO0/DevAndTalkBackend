@@ -1,5 +1,6 @@
 package com.adev.vedacommunity.user.entity;
 
+import com.adev.vedacommunity.user.role.CommunityUserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.Immutable;
@@ -28,12 +29,10 @@ public class CommunityUserView {
     }
 
     protected CommunityUserView() {
-        authorities = new ArrayList<>();
-        authorities.add((GrantedAuthority) () -> "ROLE_USER");
     }
 
     @Transient
-    Collection<GrantedAuthority> authorities;
+    protected Collection<GrantedAuthority> authorities;
     @Id
     private long id;
     private String email;
@@ -41,8 +40,13 @@ public class CommunityUserView {
     private long vedaOrder;
     @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
+
+    @Enumerated(EnumType.STRING)
+    private CommunityUserRole role;
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return new ArrayList<GrantedAuthority>() {{
+            add(() -> role.toString());
+        }};
     }
 
     // Getter, Setter 생략 (Lombok을 사용한 경우)
