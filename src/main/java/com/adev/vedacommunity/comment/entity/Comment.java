@@ -24,8 +24,18 @@ public class Comment {
 
         return true;
     }
-    public boolean canUpdate;
-
+    public boolean canUpdate(CommunityUserView requestUser){
+        if(this.commentAuthor.equals(requestUser)){
+            return true;
+        }
+        return false;
+    }
+    public boolean canDelete(CommunityUserView requestUser){
+        return true;
+    }
+    public void delete(){
+        this.isDeleted = true;
+    }
     public void update (String commentContent){
         this.commentContent = commentContent;
     }
