@@ -1,5 +1,6 @@
 package com.adev.vedacommunity.article.controller;
 
+import com.adev.vedacommunity.admin.service.AdminService;
 import com.adev.vedacommunity.article.dto.request.ArticleCreateDto;
 import com.adev.vedacommunity.article.dto.request.ArticleDeleteDto;
 import com.adev.vedacommunity.article.dto.request.ArticleReadDto;
@@ -76,6 +77,8 @@ class ArticleControllerTest {
     private ArticleRepository articleRepository;
     @Autowired
     private EntityManager em;
+    @Autowired
+    private AdminService adminService;
 
     private RequestFieldsSnippet requestFieldsSnippet =  requestFields(
             fieldWithPath("title").type(JsonFieldType.STRING).description("게시판 제목"),
@@ -97,7 +100,12 @@ class ArticleControllerTest {
 
         CommunityUser user = new CommunityUser("test@gmail.com", "testNickname");
         CommunityUser savedUser = communityUserRepository.save(user);
+        adminService.registerUser(savedUser.getId());
+        em.flush();
+        em.clear();
         CommunityUserView communityUserView = communityUserViewRepository.findById(savedUser.getId()).get();
+
+
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         UsernamePasswordAuthenticationToken authentication =

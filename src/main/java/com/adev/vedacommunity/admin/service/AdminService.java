@@ -4,6 +4,7 @@ import com.adev.vedacommunity.admin.entity.AdminCommunityUser;
 import com.adev.vedacommunity.admin.repository.AdminCommunityRepository;
 import com.adev.vedacommunity.user.entity.CommunityUser;
 import com.adev.vedacommunity.user.repository.CommunityUserRepository;
+import com.adev.vedacommunity.user.role.CommunityUserRole;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,11 @@ public class AdminService {
         communityUserRepository.delete(user);
         AdminCommunityUser adminUser = new AdminCommunityUser(user.getEmail(),user.getNickname(),adminUserName);
         adminCommunityRepository.save(adminUser);
+    }
+
+    public void registerUser(long userId){
+        CommunityUser user = communityUserRepository.findById(userId).orElseThrow(() -> new RuntimeException("no user"));
+        user.changeRoleTo(CommunityUserRole.ROLE_USER);
+
     }
 }

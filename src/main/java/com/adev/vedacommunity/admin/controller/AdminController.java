@@ -3,6 +3,7 @@ package com.adev.vedacommunity.admin.controller;
 import com.adev.vedacommunity.admin.dto.AdminUserChangeRequestDto;
 import com.adev.vedacommunity.admin.dto.AdminUserListResponseDto;
 import com.adev.vedacommunity.admin.dto.AdminArticleDeleteRequestDto;
+import com.adev.vedacommunity.admin.dto.UserRegisterRequestDto;
 import com.adev.vedacommunity.admin.service.AdminService;
 import com.adev.vedacommunity.article.repository.ArticleRepository;
 import com.adev.vedacommunity.admin.mapper.AdminMapper;
@@ -45,6 +46,11 @@ public class AdminController {
     @DeleteMapping("/article")
     public ResponseEntity deleteArticleForce(@RequestBody AdminArticleDeleteRequestDto dto,  @AuthenticationPrincipal CommunityUserView user ){
         articleRepository.findById(dto.getArticleId()).ifPresent(article -> article.delete());
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/register")
+    public ResponseEntity registerUser(@RequestBody UserRegisterRequestDto dto){
+        adminService.registerUser(dto.getId());
         return ResponseEntity.ok().build();
     }
 
