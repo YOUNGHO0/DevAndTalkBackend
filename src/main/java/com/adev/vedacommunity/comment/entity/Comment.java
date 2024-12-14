@@ -14,7 +14,7 @@ public class Comment {
 
     }
 
-    Comment(String commentContent, CommunityUserView commentAuthor, ActiveArticle article ){
+    public Comment(String commentContent, CommunityUserView commentAuthor, ActiveArticle article ){
         this.commentContent = commentContent;
         this.commentAuthor = commentAuthor;
         this.article = article;
@@ -33,13 +33,13 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-
     String commentContent;
-
-    @ManyToOne
+    boolean isDeleted = false;
+    @ManyToOne(fetch = FetchType.LAZY)
     CommunityUserView commentAuthor;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     ActiveArticle article;
+    @ManyToOne(fetch = FetchType.LAZY)
+    Comment parentComment;
 
 }
