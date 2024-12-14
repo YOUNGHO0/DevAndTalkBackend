@@ -26,7 +26,7 @@ public class Article {
     long viewCount = 0;
     boolean isDeleted = false;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     CommunityUserView author;
 
     public boolean canCreate(){
