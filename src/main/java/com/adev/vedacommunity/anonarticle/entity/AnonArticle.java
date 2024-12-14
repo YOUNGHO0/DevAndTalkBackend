@@ -1,5 +1,6 @@
 package com.adev.vedacommunity.anonarticle.entity;
 
+import com.adev.vedacommunity.logging.BaseTimeEntity;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -9,7 +10,7 @@ import java.beans.ConstructorProperties;
 
 @Entity
 @Getter
-public class AnonArticle {
+public class AnonArticle extends BaseTimeEntity {
 
     protected AnonArticle() {}
 

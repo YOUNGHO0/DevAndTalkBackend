@@ -2,13 +2,12 @@ package com.adev.vedacommunity.comment.entity;
 
 
 import com.adev.vedacommunity.article.entity.ActiveArticle;
-import com.adev.vedacommunity.article.entity.Article;
-import com.adev.vedacommunity.user.entity.CommunityUser;
+import com.adev.vedacommunity.logging.BaseTimeEntity;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
 import jakarta.persistence.*;
 
 @Entity
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     public Comment() {
 

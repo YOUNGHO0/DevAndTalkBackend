@@ -1,5 +1,6 @@
 package com.adev.vedacommunity.article.entity;
 
+import com.adev.vedacommunity.logging.BaseTimeEntity;
 import com.adev.vedacommunity.user.entity.CommunityUser;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
 import jakarta.persistence.*;
@@ -7,7 +8,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Article {
+public class Article extends BaseTimeEntity {
 
     protected Article() {}
 
