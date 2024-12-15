@@ -1,8 +1,10 @@
 package com.adev.vedacommunity.user.entity;
 
+import com.adev.vedacommunity.logging.BaseTimeEntity;
 import com.adev.vedacommunity.user.role.CommunityUserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Immutable;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -15,18 +17,26 @@ import java.util.Objects;
 @Getter // 생성한 뷰 이름을 테이블처럼 사용
 public class CommunityUserView {
 
+
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true; // 같은 객체인지 확인
-        if (o == null || getClass() != o.getClass()) return false; // 클래스 타입 확인
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
         CommunityUserView that = (CommunityUserView) o;
-        return id == that.id; // id가 동일한지 확인
+        return Objects.equals(id, that.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id); // id를 기반으로 hashCode 생성
+        return Long.hashCode(id); // id 기반으로 hashCode 생성
     }
+
+
 
     protected CommunityUserView() {
     }
