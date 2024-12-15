@@ -29,8 +29,7 @@
             this.parentComment = parentComment;
         }
 
-        @OneToMany(mappedBy = "parentComment",fetch = FetchType.LAZY)
-        List<ActiveComment> commentList = new ArrayList<>();
+
 
 
         public boolean canCreate(){
@@ -64,6 +63,9 @@
         @ManyToOne(fetch = FetchType.LAZY)
         ActiveArticle article;
         @ManyToOne(fetch = FetchType.LAZY)
-        ActiveComment parentComment;
+        Comment parentComment;
+
+        @OneToMany(mappedBy = "parentComment",fetch = FetchType.LAZY)
+        List<Comment> commentList = new ArrayList<>();
 
     }
