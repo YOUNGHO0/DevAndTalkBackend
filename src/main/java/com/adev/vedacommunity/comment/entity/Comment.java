@@ -6,14 +6,33 @@
     import com.adev.vedacommunity.user.entity.CommunityUserView;
     import jakarta.persistence.*;
     import lombok.Getter;
-    import lombok.Setter;
+    import org.hibernate.Hibernate;
 
     import java.util.ArrayList;
     import java.util.List;
+    import java.util.Objects;
 
     @Entity
     @Getter
     public class Comment extends BaseTimeEntity {
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+                return false;
+            }
+            Comment that = (Comment) o;
+            return Objects.equals(id, that.getId());
+        }
+
+        @Override
+        public int hashCode() {
+            return Long.hashCode(id); // id 기반으로 hashCode 생성
+        }
+
 
         public Comment() {}
 
