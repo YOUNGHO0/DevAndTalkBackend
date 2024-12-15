@@ -5,12 +5,14 @@
     import com.adev.vedacommunity.logging.BaseTimeEntity;
     import com.adev.vedacommunity.user.entity.CommunityUserView;
     import jakarta.persistence.*;
+    import lombok.Getter;
     import lombok.Setter;
 
     import java.util.ArrayList;
     import java.util.List;
 
     @Entity
+    @Getter
     public class Comment extends BaseTimeEntity {
 
         public Comment() {}
@@ -28,7 +30,7 @@
         }
 
         @OneToMany(mappedBy = "parentComment",fetch = FetchType.LAZY)
-        List<Comment> commentList = new ArrayList<>();
+        List<ActiveComment> commentList = new ArrayList<>();
 
 
         public boolean canCreate(){
