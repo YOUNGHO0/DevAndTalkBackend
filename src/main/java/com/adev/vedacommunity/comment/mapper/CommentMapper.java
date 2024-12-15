@@ -2,6 +2,7 @@ package com.adev.vedacommunity.comment.mapper;
 
 import com.adev.vedacommunity.article.entity.ActiveArticle;
 import com.adev.vedacommunity.comment.dto.read.CommentReadResponseDto;
+import com.adev.vedacommunity.comment.dto.request.ChildCommentCreateRequestDto;
 import com.adev.vedacommunity.comment.dto.request.CommentCreateRequestDto;
 import com.adev.vedacommunity.comment.entity.ActiveComment;
 import com.adev.vedacommunity.comment.entity.Comment;
@@ -18,5 +19,7 @@ public interface CommentMapper {
         return new Comment(commentContent,commentAuthor,article);
     }
 
-
+    default Comment toChildComment(ChildCommentCreateRequestDto dto, ActiveComment parentComment, CommunityUserView user,ActiveArticle article){
+        return new Comment(dto.getCommentContent(),user,article,parentComment);
+    }
 }
