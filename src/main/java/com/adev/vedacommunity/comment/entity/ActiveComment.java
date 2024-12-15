@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Immutable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Immutable
 @Entity
@@ -23,5 +25,7 @@ public class ActiveComment {
     ActiveArticle article;
     @ManyToOne
     ActiveComment parentComment;
+    @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY)
+    List<ActiveComment> childComments = new ArrayList<>();
 
 }
