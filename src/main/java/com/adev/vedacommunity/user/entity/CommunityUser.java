@@ -28,6 +28,7 @@ public class CommunityUser extends BaseTimeEntity {
     public CommunityUser(String email, String nickName){
 
         this.email = email;
+        this.nickname = nickName;
         this.vedaOrder = 1;
         this.company = null;
         this.isDeleted = false;
