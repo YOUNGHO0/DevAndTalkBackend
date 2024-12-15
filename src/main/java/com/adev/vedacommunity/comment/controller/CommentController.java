@@ -25,6 +25,8 @@ public class CommentController {
     private final CommentMapper commentMapper;
     private final ArticleService articleService;
     private final ActiveCommentRepository activeCommentRepository;
+    private final CommentRepository commentRepository;
+
     @PostMapping
     public ResponseEntity creatComment(@RequestBody CommentCreateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
 
@@ -37,7 +39,7 @@ public class CommentController {
     @PostMapping("/child")
     public ResponseEntity createChildComment(@RequestBody ChildCommentCreateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
 
-        ActiveComment parentComment = activeCommentRepository.findById(dto.getParentId()).orElseThrow(() -> new RuntimeException("No comment found"));
+        Comment parentComment =  commentRepository.findById(dto.getParentId()).orElseThrow(() -> new RuntimeException("No comment found"));
         Comment childComment = commentMapper.toChildComment(dto, parentComment, user, parentComment.getArticle());
         commentService.createComment(childComment);
         return ResponseEntity.ok().build();

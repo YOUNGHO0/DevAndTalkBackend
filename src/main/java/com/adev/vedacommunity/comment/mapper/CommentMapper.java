@@ -19,7 +19,7 @@ public interface CommentMapper {
         return new Comment(commentContent,commentAuthor,article);
     }
 
-    default Comment toChildComment(ChildCommentCreateRequestDto dto, ActiveComment parentComment, CommunityUserView user,ActiveArticle article){
+    default Comment toChildComment(ChildCommentCreateRequestDto dto, Comment parentComment, CommunityUserView user,ActiveArticle article){
         return new Comment(dto.getCommentContent(),user,article,parentComment);
     }
 }

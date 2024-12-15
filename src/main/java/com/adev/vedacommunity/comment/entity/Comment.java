@@ -22,7 +22,7 @@
             this.commentAuthor = commentAuthor;
             this.article = article;
         }
-        public Comment(String commentContent, CommunityUserView commentAuthor, ActiveArticle article, ActiveComment parentComment ){
+        public Comment(String commentContent, CommunityUserView commentAuthor, ActiveArticle article, Comment parentComment ){
             this.commentContent = commentContent;
             this.commentAuthor = commentAuthor;
             this.article = article;
