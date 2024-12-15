@@ -1,14 +1,36 @@
 package com.adev.vedacommunity.article.entity;
 
+import com.adev.vedacommunity.comment.entity.Comment;
 import com.adev.vedacommunity.logging.BaseTimeEntity;
 import com.adev.vedacommunity.user.entity.CommunityUser;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.Hibernate;
+
+import java.util.Objects;
 
 @Entity
 @Getter
 public class Article extends BaseTimeEntity {
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        Article that = (Article) o;
+        return Objects.equals(id, that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(id); // id 기반으로 hashCode 생성
+    }
 
     protected Article() {}
 
