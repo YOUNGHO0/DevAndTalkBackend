@@ -4,6 +4,7 @@ import com.adev.vedacommunity.user.entity.CommunityUser;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Immutable;
 import java.util.Objects;
 
@@ -15,17 +16,20 @@ public class ActiveArticle {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true; // 같은 객체인지 확인
-        if (o == null || getClass() != o.getClass()) return false; // 클래스 타입 확인
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
         ActiveArticle that = (ActiveArticle) o;
-        return id == that.id; // id가 동일한지 확인
+        return Objects.equals(id, that.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id); // id를 기반으로 hashCode 생성
+        return Long.hashCode(id); // id 기반으로 hashCode 생성
     }
-
 
     protected ActiveArticle(){};
     @Id
