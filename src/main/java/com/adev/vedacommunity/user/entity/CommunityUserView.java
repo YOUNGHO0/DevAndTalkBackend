@@ -41,8 +41,6 @@ public class CommunityUserView {
     protected CommunityUserView() {
     }
 
-    @Transient
-    protected Collection<GrantedAuthority> authorities;
     @Id
     private long id;
     private String email;
