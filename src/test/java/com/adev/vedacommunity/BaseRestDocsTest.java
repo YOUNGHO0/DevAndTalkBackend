@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 @ExtendWith(RestDocumentationExtension.class)
@@ -32,13 +33,13 @@ public class BaseRestDocsTest {
 
     protected MockMvc mockMvc;
 
-
     protected OperationRequestPreprocessor operationRequestPreprocessor = Preprocessors.preprocessRequest(Preprocessors.prettyPrint());
     protected OperationResponsePreprocessor operationResponsePreprocessor =  Preprocessors.preprocessResponse(Preprocessors.prettyPrint());
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(restDocumentation))
+                .apply(springSecurity())
                 .build();
     }
 }
