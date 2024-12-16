@@ -30,7 +30,7 @@ public class ArticleController {
     private final ArticleMapper articleMapper;
     private final ActiveArticleRepository articleRepository;
     @PostMapping("")
-    public ResponseEntity createArticle (ArticleCreateDto dto, @AuthenticationPrincipal CommunityUserView communityUser) {
+    public ResponseEntity createArticle (@RequestBody ArticleCreateDto dto, @AuthenticationPrincipal CommunityUserView communityUser) {
 
         Article article = articleMapper.toArticle(dto, communityUser);
         articleService.write(article);
