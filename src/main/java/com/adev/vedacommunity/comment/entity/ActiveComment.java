@@ -46,6 +46,8 @@ public class ActiveComment {
     ActiveArticle article;
     @ManyToOne
     ActiveComment parentComment;
+    @Column(name = "parent_comment_id", insertable = false, updatable = false) // 외래 키 값 직접 접근
+    private Long parentCommentId;
     @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY)
     List<ActiveComment> childComments = new ArrayList<>();
 
