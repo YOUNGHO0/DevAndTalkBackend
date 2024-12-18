@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/v1/AnonComment")
+@RequestMapping("/api/v1/anonComment")
 @RequiredArgsConstructor
 public class AnonCommentController {
 
