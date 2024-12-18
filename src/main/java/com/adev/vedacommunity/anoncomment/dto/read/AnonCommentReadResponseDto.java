@@ -10,6 +10,5 @@ public class AnonCommentReadResponseDto {
 
     long id;
     String commentContent;
-    CommunityUserReadResponseDto commentAuthor;
     long articleId;
 }
