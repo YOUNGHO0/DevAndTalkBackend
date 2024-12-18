@@ -105,8 +105,6 @@ class ArticleControllerTest {
         em.clear();
         CommunityUserView communityUserView = communityUserViewRepository.findById(savedUser.getId()).get();
 
-
-
         MockHttpServletRequest request = new MockHttpServletRequest();
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(communityUserView, null,communityUserView.getAuthorities());

@@ -1,6 +1,7 @@
-    package com.adev.vedacommunity.comment.entity;
+    package com.adev.vedacommunity.anoncomment.entity;
 
 
+    import com.adev.vedacommunity.anonarticle.entity.ActiveAnonArticle;
     import com.adev.vedacommunity.article.entity.ActiveArticle;
     import com.adev.vedacommunity.logging.BaseTimeEntity;
     import com.adev.vedacommunity.user.entity.CommunityUserView;
@@ -14,7 +15,7 @@
 
     @Entity
     @Getter
-    public class Comment extends BaseTimeEntity {
+    public class AnonComment extends BaseTimeEntity {
 
         @Override
         public boolean equals(Object o) {
@@ -24,7 +25,7 @@
             if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
                 return false;
             }
-            Comment that = (Comment) o;
+            AnonComment that = (AnonComment) o;
             return Objects.equals(id, that.getId());
         }
 
@@ -34,15 +35,15 @@
         }
 
 
-        public Comment() {
+        public AnonComment() {
         }
 
-        public Comment(String commentContent, CommunityUserView commentAuthor, ActiveArticle article ){
+        public AnonComment(String commentContent, CommunityUserView commentAuthor, ActiveAnonArticle article ){
             this.commentContent = commentContent;
             this.commentAuthor = commentAuthor;
             this.article = article;
         }
-        public Comment(String commentContent, CommunityUserView commentAuthor, ActiveArticle article, Comment parentComment ){
+        public AnonComment(String commentContent, CommunityUserView commentAuthor, ActiveAnonArticle article, AnonComment parentComment ){
             this.commentContent = commentContent;
             this.commentAuthor = commentAuthor;
             this.article = article;
@@ -81,11 +82,11 @@
         @ManyToOne(fetch = FetchType.LAZY)
         CommunityUserView commentAuthor;
         @ManyToOne(fetch = FetchType.LAZY)
-        ActiveArticle article;
+        ActiveAnonArticle article;
         @ManyToOne(fetch = FetchType.LAZY)
-        Comment parentComment;
+        AnonComment parentComment;
 
         @OneToMany(mappedBy = "parentComment",fetch = FetchType.LAZY)
-        List<Comment> commentList = new ArrayList<>();
+        List<AnonComment> commentList = new ArrayList<>();
 
     }

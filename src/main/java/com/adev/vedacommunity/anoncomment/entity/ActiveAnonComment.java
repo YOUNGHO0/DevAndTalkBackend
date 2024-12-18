@@ -1,14 +1,13 @@
-package com.adev.vedacommunity.comment.entity;
+package com.adev.vedacommunity.anoncomment.entity;
 
 import com.adev.vedacommunity.article.entity.ActiveArticle;
-import com.adev.vedacommunity.article.entity.Article;
 import com.adev.vedacommunity.logging.BaseTimeEntity;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Immutable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +15,7 @@ import java.util.Objects;
 @Immutable
 @Entity
 @Getter
-public class ActiveComment extends BaseTimeEntity {
+public class ActiveAnonComment extends BaseTimeEntity {
 
 
     @Override
@@ -27,7 +26,7 @@ public class ActiveComment extends BaseTimeEntity {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
             return false;
         }
-        ActiveComment that = (ActiveComment) o;
+        ActiveAnonComment that = (ActiveAnonComment) o;
         return Objects.equals(id, that.getId());
     }
 
@@ -36,20 +35,18 @@ public class ActiveComment extends BaseTimeEntity {
         return Long.hashCode(id); // id 기반으로 hashCode 생성
     }
 
-    protected ActiveComment(){};
+    protected ActiveAnonComment(){};
     @Id
     long id;
 
     String commentContent;
     @ManyToOne
-    CommunityUserView commentAuthor;
-    @ManyToOne
     ActiveArticle article;
     @ManyToOne
-    ActiveComment parentComment;
+    ActiveAnonComment parentComment;
     @Column(name = "parent_comment_id", insertable = false, updatable = false) // 외래 키 값 직접 접근
     private Long parentCommentId;
     @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY)
-    List<ActiveComment> childComments = new ArrayList<>();
+    List<ActiveAnonComment> childComments = new ArrayList<>();
 
 }

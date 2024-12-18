@@ -1,6 +1,7 @@
 package com.adev.vedacommunity.anonarticle.controller;
 
 import com.adev.vedacommunity.BaseRestDocsTest;
+import com.adev.vedacommunity.admin.service.AdminService;
 import com.adev.vedacommunity.anonarticle.dto.request.AnonArticleCreateRequestDto;
 import com.adev.vedacommunity.anonarticle.dto.request.AnonArticleReadRequestDto;
 import com.adev.vedacommunity.anonarticle.entity.AnonArticle;
@@ -46,6 +47,9 @@ class AnonArticleControllerTest extends BaseRestDocsTest {
     AnonArticleRepository anonArticleRepository;
 
     @Autowired
+    AdminService adminService;
+
+    @Autowired
     EntityManager em;
 
 
@@ -54,6 +58,9 @@ class AnonArticleControllerTest extends BaseRestDocsTest {
 
         CommunityUser user = new CommunityUser("test@gmail.com", "testNickname");
         CommunityUser savedUser = communityUserRepository.save(user);
+        adminService.registerUser(savedUser.getId());
+        em.flush();
+        em.clear();
         CommunityUserView communityUserView = communityUserViewRepository.findById(savedUser.getId()).get();
 
         MockHttpServletRequest request = new MockHttpServletRequest();

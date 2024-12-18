@@ -8,6 +8,8 @@ import com.adev.vedacommunity.user.entity.CommunityUserView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -40,6 +42,11 @@ public class CommentService {
                 comment.delete();
             }
         });
+    }
+
+    public List<ActiveComment> getCommentList(long articleId){
+        List<ActiveComment> commentList = activeCommentRepository.findAllByArticleId(articleId);
+        return commentList;
     }
 
 }
