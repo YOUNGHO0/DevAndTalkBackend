@@ -33,6 +33,14 @@ public class UserService {
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
     }
 
+    public void deleteUser(CommunityUserView user){
+
+        CommunityUser communityUser = communityUserRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("No User"));
+        communityUser.delete();
+
+
+    }
+
 
 
 }
