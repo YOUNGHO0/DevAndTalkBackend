@@ -20,10 +20,6 @@ public class CommunityUser extends BaseTimeEntity {
 
     }
 
-    public String canTest(CommunityUser user){
-       return  user.getNickname();
-
-    }
 
     public CommunityUser(String email, String nickName){
 
@@ -42,6 +38,10 @@ public class CommunityUser extends BaseTimeEntity {
         this.nickname = nickname;
         this.email = email;
         this.company = company;
+    }
+
+    public void  delete(){
+        this.isDeleted = true;
     }
 
     @Id
