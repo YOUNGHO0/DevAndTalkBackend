@@ -13,14 +13,6 @@ public class AdminCommunityUser extends CommunityUser {
 
     }
 
-    @Override
-    public String canTest(CommunityUser user) {
-
-        AdminCommunityUser test = (AdminCommunityUser) user;
-        return test.getAdminUserName();
-
-    }
-
     private String adminUserName;
 
     public AdminCommunityUser(String email, String nickName, String adminUserName) {
