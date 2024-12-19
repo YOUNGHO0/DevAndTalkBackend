@@ -46,5 +46,13 @@ public class AnonArticleService {
 
     }
 
+    public void deleteAlL(CommunityUserView user){
+        anonArticleRepository.findByAuthor(user).forEach(anonArticle -> {
+            if(anonArticle.canDelete(user)){
+                anonArticle.delete();
+            }
+        });
+    }
+
 
 }

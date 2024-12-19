@@ -48,4 +48,12 @@ public class ArticleService {
             }
         });
     }
+
+    public void deleteAll(CommunityUserView user){
+        articleRepository.findByAuthor(user).forEach(article -> {
+            if(article.canDelete(user)) {
+                article.delete();
+            }
+        });
+    }
 }

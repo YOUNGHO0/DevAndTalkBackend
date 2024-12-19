@@ -49,4 +49,13 @@ public class AnonCommentService {
         return commentList;
     }
 
+    public void deleteAll(CommunityUserView user){
+
+        anonCommentRepository.findByCommentAuthor(user).forEach(anonComment -> {
+            if(anonComment.canDelete(user)){
+                anonComment.delete();
+            }
+        });
+    }
+
 }

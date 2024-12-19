@@ -49,4 +49,12 @@ public class CommentService {
         return commentList;
     }
 
+    public void deleteAll(CommunityUserView user){
+        commentRepository.findByCommentAuthor(user).forEach(comment -> {
+            if(comment.canDelete(user)){
+                comment.delete();
+            }
+        });
+    }
+
 }
