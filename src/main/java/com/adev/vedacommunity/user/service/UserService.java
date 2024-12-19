@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class UserService {
 
-    CommunityUserRepository communityUserRepository;
+    private final CommunityUserRepository communityUserRepository;
 
 
 
