@@ -40,7 +40,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/*").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/v1/admin/*").hasRole("ADMIN")
                         .anyRequest().permitAll() )// GET 요청은 인증 없이 접근 가능
-                .oauth2Login(Customizer.withDefaults()
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oauthSuccessHandler)
+                        .failureHandler(oauthFailureHandler)
                 )
                 .exceptionHandling(configurer -> configurer.authenticationEntryPoint(new EntryPointUnauthorizedHandler(new ObjectMapper())));
 
