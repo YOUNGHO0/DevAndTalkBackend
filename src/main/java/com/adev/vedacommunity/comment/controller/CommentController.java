@@ -52,8 +52,8 @@ public class CommentController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/list")
-    public ResponseEntity getChildCommentList(@RequestBody CommentPageRequestDto dto){
+    @GetMapping("/list/{articleId}")
+    public ResponseEntity getChildCommentList(@PathVariable long articleId){
 
         List<ActiveComment> commentList = commentService.getCommentList(dto.getArticleId());
         List<CommentDto> commentDtoList = makeCommentDtos(commentList);
