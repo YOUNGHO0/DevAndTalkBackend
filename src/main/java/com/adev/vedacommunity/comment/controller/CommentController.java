@@ -46,6 +46,7 @@ public class CommentController {
     public ResponseEntity createChildComment(@RequestBody ChildCommentCreateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
 
         Comment parentComment =  commentRepository.findById(dto.getParentId()).orElseThrow(() -> new RuntimeException("No comment found"));
+        if(parentComment.getParentComment() != null) throw new RuntimeException("not usual comment Request");
         Comment childComment = commentMapper.toChildComment(dto, parentComment, user, parentComment.getArticle());
         commentService.createComment(childComment);
         return ResponseEntity.ok().build();
