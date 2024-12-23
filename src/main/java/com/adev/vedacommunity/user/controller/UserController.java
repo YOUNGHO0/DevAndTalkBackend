@@ -46,4 +46,18 @@ public class UserController {
         anonCommentService.deleteAll(communityUserView);
         commentService.deleteAll(communityUserView);
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity logOut(HttpServletRequest request, HttpServletResponse response){
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.logout(request, response, null);
+
+        return ResponseEntity.ok().body("로그아웃 성공");
+    }
 }
