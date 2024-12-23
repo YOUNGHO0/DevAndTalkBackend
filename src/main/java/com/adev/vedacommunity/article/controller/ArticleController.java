@@ -37,9 +37,9 @@ public class ArticleController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("")
-    public ResponseEntity getArticle (@RequestBody ArticleReadDto readDto) {
-        Optional<ActiveArticle> read = articleService.read(readDto.getArticleId());
+    @GetMapping("/{id}")
+    public ResponseEntity getArticle(@PathVariable long id) {
+        Optional<ActiveArticle> read = articleService.read(id); // id를 사용하여 데이터 조회
         if (read.isPresent()) {
             return ResponseEntity.ok(articleMapper.toArticleReadDto(read.get()));
         }
