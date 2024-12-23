@@ -55,7 +55,7 @@ public class CommentController {
     @GetMapping("/list/{articleId}")
     public ResponseEntity getChildCommentList(@PathVariable long articleId){
 
-        List<ActiveComment> commentList = commentService.getCommentList(dto.getArticleId());
+        List<ActiveComment> commentList = commentService.getCommentList(articleId);
         List<CommentDto> commentDtoList = makeCommentDtos(commentList);
         return ResponseEntity.ok().body(commentDtoList);
     }
