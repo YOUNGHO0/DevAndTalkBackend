@@ -37,7 +37,7 @@ public class CommentController {
     public ResponseEntity creatComment(@RequestBody CommentCreateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
 
         ActiveArticle article = articleService.read(dto.getArticleId()).orElseThrow(() -> new RuntimeException("No article found"));
-        Comment comment = commentMapper.toComment("commentContent", user, article);
+        Comment comment = commentMapper.toComment(dto.getCommentContent(), user, article);
         commentService.createComment(comment);
         return ResponseEntity.ok().build();
     }
@@ -104,14 +104,12 @@ public class CommentController {
                 CommentDto parentCommentDto = parentCommentMap.get(key);
                 List<CommentDto> childCommentList = childComment.get(key);
                 parentCommentDto.setChildCommentList(childCommentList);
-                childComment.remove(key);
                 parentCommentMap.remove(key);
                 commentDtoList.add(parentCommentDto);
             }
             else{
                 CommentDto parentMockDto = new CommentDto(key, "삭제된 댓글입니다", null,null);
                 List<CommentDto> childCommentList = childComment.get(key);
-                childComment.remove(key);
                 parentMockDto.setChildCommentList(childCommentList);
                 commentDtoList.add(parentMockDto);
             }
@@ -132,7 +130,6 @@ public class CommentController {
     }
     @PatchMapping
     public ResponseEntity updateComment(@RequestBody CommentUpdateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
-
         commentService.updateComment(dto.getCommentId(),dto.getContent(),user);
         return ResponseEntity.ok().build();
     }
