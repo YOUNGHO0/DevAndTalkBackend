@@ -12,6 +12,6 @@ public interface ActiveAnonArticleRepository extends JpaRepository<ActiveAnonArt
 
     Optional<ActiveAnonArticle> findById(Long articleId);
 
-    @Query("SELECT a FROM ActiveAnonArticle a")
+    @Query("SELECT a FROM ActiveAnonArticle a join fetch a.author")
     Page<ActiveAnonArticle> getArticleList(Pageable pageable);
 }
