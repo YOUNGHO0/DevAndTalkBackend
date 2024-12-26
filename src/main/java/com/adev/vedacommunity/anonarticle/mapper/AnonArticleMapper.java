@@ -12,10 +12,16 @@ import org.springframework.data.domain.Page;
 @Mapper(componentModel = "spring")
 public interface AnonArticleMapper {
 
-    AnonArticleReadResponseDto toReadDto(ActiveAnonArticle anonArticle);
+    default AnonArticleReadResponseDto toReadDto(ActiveAnonArticle anonArticle, CommunityUserView user){
+        boolean isAuthor = false;
+        if(anonArticle.getAuthor().equals(user)){
+            isAuthor= true;
+        }
+        return new AnonArticleReadResponseDto(anonArticle.getId(),anonArticle.getCreatedDate(),anonArticle.getTitle(),anonArticle.getContent(),anonArticle.getViewCount(),isAuthor);
+    }
     AnonArticle toAnonArticle(AnonArticleCreateRequestDto dto, CommunityUserView author);
-    default Page<AnonArticleReadResponseDto> toAnonArticleReadResponseDto(Page<ActiveAnonArticle> activeArticle){
-        return activeArticle.map(this::toReadDto);
+    default Page<AnonArticleReadResponseDto> toAnonArticleReadResponseDto(Page<ActiveAnonArticle> activeArticle, CommunityUserView user){
+        return activeArticle.map(activeAnonArticle -> this.toReadDto(activeAnonArticle,user));
     }
 
 }
