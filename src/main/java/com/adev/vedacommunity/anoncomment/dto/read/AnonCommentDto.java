@@ -16,12 +16,16 @@ public class AnonCommentDto {
     String commentContent;
     @Setter
     List<AnonCommentDto> childCommentList;
+    boolean author;
+    boolean anonArticleAuthor;
 
-    public AnonCommentDto(long id, String commentContent, LocalDateTime createdAt) {
+    public AnonCommentDto(long id, String commentContent, LocalDateTime createdAt,boolean author, boolean anonArticleAuthor) {
         this.id = id;
         this.commentContent = commentContent;
         this.createdAt = createdAt;
         childCommentList = null;
+        this.author = author;
+        this.anonArticleAuthor = anonArticleAuthor;
     }
 
 }

@@ -2,6 +2,7 @@ package com.adev.vedacommunity.anoncomment.controller;
 
 import com.adev.vedacommunity.anonarticle.entity.ActiveAnonArticle;
 import com.adev.vedacommunity.anonarticle.entity.AnonArticle;
+import com.adev.vedacommunity.anonarticle.repository.ActiveAnonArticleRepository;
 import com.adev.vedacommunity.anonarticle.service.AnonArticleService;
 import com.adev.vedacommunity.anoncomment.dto.read.AnonCommentDto;
 import com.adev.vedacommunity.anoncomment.dto.read.AnonCommentReadResponseDto;
@@ -34,11 +35,13 @@ public class AnonCommentController {
     private final ActiveAnonCommentRepository activeAnonCommentRepository;
     private final AnonCommentRepository anonCommentRepository;
     private final CommunityUserMapper communityUserMapper;
+    private final ActiveAnonArticleRepository activeAnonArticleRepository;
+
     @PostMapping
     public ResponseEntity creatComment(@RequestBody AnonCommentCreateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
 
         ActiveAnonArticle article = articleService.read(dto.getArticleId());
-        AnonComment AnonComment = anonCommentMapper.toComment("commentContent", user, article);
+        AnonComment AnonComment = anonCommentMapper.toComment(dto.getCommentContent(), user, article);
         anonCommentService.createComment(AnonComment);
         return ResponseEntity.ok().build();
     }
@@ -52,15 +55,18 @@ public class AnonCommentController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/list")
-    public ResponseEntity getChildCommentList(@RequestBody AnonCommentPageRequestDto dto){
+    @GetMapping("/list/{id}")
+    public ResponseEntity getChildCommentList(@PathVariable Long id, @AuthenticationPrincipal CommunityUserView requestUser){
 
-        List<ActiveAnonComment> commentList = anonCommentService.getCommentList(dto.getArticleId());
-        List<AnonCommentDto> anonCommentDtoList = makeCommentDtos(commentList);
+        List<ActiveAnonComment> commentList = anonCommentService.getCommentList(id);
+        ActiveAnonArticle activeAnonArticle = activeAnonArticleRepository.findById(id).orElseThrow(() -> new RuntimeException("No AnonArticle found"));
+        CommunityUserView anonArticleAuthor = activeAnonArticle.getAuthor();
+
+        List<AnonCommentDto> anonCommentDtoList = makeCommentDtos(commentList,requestUser,anonArticleAuthor);
         return ResponseEntity.ok().body(anonCommentDtoList);
     }
 
-    private List<AnonCommentDto> makeCommentDtos(List<ActiveAnonComment> commentList) {
+    private List<AnonCommentDto> makeCommentDtos(List<ActiveAnonComment> commentList, CommunityUserView requestUser, CommunityUserView anonArticleAuthor) {
 
 
 
@@ -69,11 +75,17 @@ public class AnonCommentController {
 
         for(ActiveAnonComment AnonComment : commentList){
 
+            boolean author = false;
+            boolean isAnonArticleUser = false;
+            if(anonArticleAuthor.equals(AnonComment.getCommentAuthor())) isAnonArticleUser = true;
+            if(requestUser.equals(AnonComment.getCommentAuthor())) author = true;
             if(AnonComment.getParentCommentId() == null){
                 AnonCommentDto parent = new AnonCommentDto(
                         AnonComment.getId(),
                         AnonComment.getCommentContent(),
-                        AnonComment.getCreatedDate()
+                        AnonComment.getCreatedDate(),
+                        author,
+                        isAnonArticleUser
                         );
                 parentCommentMap.put(AnonComment.getId(),parent);
             }
@@ -86,7 +98,9 @@ public class AnonCommentController {
                 comList.add(
                         new AnonCommentDto(AnonComment.getId(),
                                 AnonComment.getCommentContent(),
-                                AnonComment.getCreatedDate()
+                                AnonComment.getCreatedDate(),
+                                author,
+                                isAnonArticleUser
                         ));
 
             }
@@ -102,14 +116,12 @@ public class AnonCommentController {
                 AnonCommentDto parentAnonCommentDto = parentCommentMap.get(key);
                 List<AnonCommentDto> childCommentList = childComment.get(key);
                 parentAnonCommentDto.setChildCommentList(childCommentList);
-                childComment.remove(key);
                 parentCommentMap.remove(key);
                 anonCommentDtoList.add(parentAnonCommentDto);
             }
             else{
-                AnonCommentDto parentMockDto = new AnonCommentDto(key,"삭제된 댓글입니다",null);
+                AnonCommentDto parentMockDto = new AnonCommentDto(key,"삭제된 댓글입니다",null,false,false);
                 List<AnonCommentDto> childCommentList = childComment.get(key);
-                childComment.remove(key);
                 parentMockDto.setChildCommentList(childCommentList);
                 anonCommentDtoList.add(parentMockDto);
             }
