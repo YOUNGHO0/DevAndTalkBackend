@@ -37,9 +37,9 @@ public class AnonArticleController {
     };
 
     @GetMapping
-    public ResponseEntity readAnonArticle(@RequestBody AnonArticleReadRequestDto requestDto ){
+    public ResponseEntity readAnonArticle(@RequestBody AnonArticleReadRequestDto requestDto ,@AuthenticationPrincipal CommunityUserView user){
         ActiveAnonArticle read = anonArticleService.read(requestDto.getAnonArticleId());
-        AnonArticleReadResponseDto readDto = anonArticleMapper.toReadDto(read);
+        AnonArticleReadResponseDto readDto = anonArticleMapper.toReadDto(read,user);
 
         return ResponseEntity.ok(readDto);
     };
@@ -57,15 +57,15 @@ public class AnonArticleController {
     };
 
     @GetMapping("/{id}")
-    public ResponseEntity getArticle(@PathVariable long id) {
+    public ResponseEntity getArticle(@PathVariable long id, @AuthenticationPrincipal CommunityUserView user) {
         ActiveAnonArticle anonArticle = anonArticleService.read(id); // id를 사용하여 데이터 조회
 
-        return ResponseEntity.ok(anonArticleMapper.toReadDto(anonArticle));
+        return ResponseEntity.ok(anonArticleMapper.toReadDto(anonArticle,user));
     }
 
     @GetMapping("/list")
-    public ResponseEntity getArticle(Pageable pageable){
+    public ResponseEntity getArticle(Pageable pageable, @AuthenticationPrincipal CommunityUserView user){
         Page<ActiveAnonArticle> list = activeAnonArticleRepository.getArticleList(pageable);
-        return ResponseEntity.ok().body(anonArticleMapper.toAnonArticleReadResponseDto(list));
+        return ResponseEntity.ok().body(anonArticleMapper.toAnonArticleReadResponseDto(list,user));
     }
 }
