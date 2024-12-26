@@ -7,11 +7,13 @@ import com.adev.vedacommunity.anoncomment.repository.AnonCommentRepository;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AnonCommentService {
 
     private final AnonCommentRepository anonCommentRepository;
