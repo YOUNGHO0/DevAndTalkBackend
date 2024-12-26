@@ -38,7 +38,8 @@ public class ActiveAnonComment extends BaseTimeEntity {
     protected ActiveAnonComment(){};
     @Id
     long id;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    CommunityUserView commentAuthor;
     String commentContent;
     @ManyToOne
     ActiveArticle article;
