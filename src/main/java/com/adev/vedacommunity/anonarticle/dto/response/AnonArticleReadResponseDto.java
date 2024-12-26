@@ -16,5 +16,6 @@ public class AnonArticleReadResponseDto {
     String title;
     String content;
     long viewCount;
+    boolean isAuthor;
 
 }
