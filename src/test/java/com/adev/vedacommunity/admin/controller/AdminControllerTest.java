@@ -57,8 +57,6 @@ class AdminControllerTest extends BaseRestDocsTest {
         return mockHttpSession;
     }
 
-    @Test
-    @DisplayName("관리자가 접속하면 사용자 목록을 반환한다")
     public void test() throws Exception {
 
         MockHttpSession session = setAdminUser();

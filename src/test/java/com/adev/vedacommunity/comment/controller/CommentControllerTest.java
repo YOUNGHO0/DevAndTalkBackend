@@ -223,13 +223,11 @@ class CommentControllerTest extends BaseRestDocsTest {
         commentRepository.save(childComment);
         em.flush();
         em.clear();
-        CommentPageRequestDto requestDto = new CommentPageRequestDto(saved.getId());
-        String json = new Gson().toJson(requestDto);
-        this.mockMvc.perform(get("/api/v1/comment/list")
+
+        this.mockMvc.perform(get("/api/v1/comment/list/"+saved.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .session(savedUserSession)
-                        .content(json)
                 ).andExpect(status().isOk())
                 .andDo(document("commentGet/success",
                         operationRequestPreprocessor,
@@ -254,14 +252,12 @@ class CommentControllerTest extends BaseRestDocsTest {
         em.flush();
         em.clear();
 
-        CommentPageRequestDto requestDto = new CommentPageRequestDto(saved.getId());
-        String json = new Gson().toJson(requestDto);
 
-        this.mockMvc.perform(get("/api/v1/comment/list")
+        this.mockMvc.perform(get("/api/v1/comment/list/"+saved.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .session(savedUserSession)
-                        .content(json))
+                       )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(1)) // 응답 리스트 크기: 부모 댓글 1개
                 .andExpect(jsonPath("$[0].childCommentList").doesNotExist()) // 첫 번째 댓글의 자식 댓글이 없음
@@ -287,14 +283,12 @@ class CommentControllerTest extends BaseRestDocsTest {
         em.flush();
         em.clear();
 
-        CommentPageRequestDto requestDto = new CommentPageRequestDto(saved.getId());
-        String json = new Gson().toJson(requestDto);
 
-        this.mockMvc.perform(get("/api/v1/comment/list")
+        this.mockMvc.perform(get("/api/v1/comment/list/"+saved.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .session(savedUserSession)
-                        .content(json))
+                   )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(1))
                 .andExpect(jsonPath("$[0].childCommentList.size()").value(3))
@@ -332,12 +326,11 @@ class CommentControllerTest extends BaseRestDocsTest {
                 ).andExpect(status().isOk());
         em.flush();
         em.clear();
-        CommentPageRequestDto requestDto = new CommentPageRequestDto(activeArticle.getId());
-        String requestJsonn = new Gson().toJson(requestDto);
-        this.mockMvc.perform(get("/api/v1/comment/list")
+
+        this.mockMvc.perform(get("/api/v1/comment/list/"+activeArticle.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(requestJsonn)
+                        .session(savedUserSession)
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$[0].commentContent").value("삭제된 댓글입니다"))
@@ -378,12 +371,11 @@ class CommentControllerTest extends BaseRestDocsTest {
         ).andExpect(status().isOk());
         em.flush();
         em.clear();
-        CommentPageRequestDto requestDto = new CommentPageRequestDto(activeArticle.getId());
-        String requestJsonn = new Gson().toJson(requestDto);
-        this.mockMvc.perform(get("/api/v1/comment/list")
+
+        this.mockMvc.perform(get("/api/v1/comment/list/"+activeArticle.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(requestJsonn)
+                        .session(savedUserSession)
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$..childCommentList[?(@.commentContent == 'childComment2')]").doesNotExist())
@@ -422,12 +414,11 @@ class CommentControllerTest extends BaseRestDocsTest {
         ).andExpect(status().isOk());
         em.flush();
         em.clear();
-        CommentPageRequestDto requestDto = new CommentPageRequestDto(activeArticle.getId());
-        String requestJsonn = new Gson().toJson(requestDto);
-        this.mockMvc.perform(get("/api/v1/comment/list")
+
+        this.mockMvc.perform(get("/api/v1/comment/list/"+activeArticle.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(requestJsonn)
+                        .session(savedUserSession)
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$..childCommentList[?(@.commentContent == 'childComment2')]").doesNotExist())
@@ -467,12 +458,12 @@ class CommentControllerTest extends BaseRestDocsTest {
         ).andExpect(status().isOk());
         em.flush();
         em.clear();
-        CommentPageRequestDto requestDto = new CommentPageRequestDto(activeArticle.getId());
-        String requestJsonn = new Gson().toJson(requestDto);
-        this.mockMvc.perform(get("/api/v1/comment/list")
+
+        this.mockMvc.perform(get("/api/v1/comment/list/"+activeArticle.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(requestJsonn))
+                                .session(savedUserSession)
+                        )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[?(@.commentContent == 'parentCommentContent')]").doesNotExist()) // 'parentCommentContent'가 존재하지 않음을 확인
                 .andExpect(jsonPath("$[0].commentContent").value("parentCommentChanged")) // 첫 번째 댓글이 'parentCommentChanged'인지 확인

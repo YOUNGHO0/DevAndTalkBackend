@@ -229,13 +229,10 @@ class AnonCommentControllerTest extends BaseRestDocsTest {
         commentRepository.save(childComment);
         em.flush();
         em.clear();
-        CommentPageRequestDto requestDto = new CommentPageRequestDto(saved.getId());
-        String json = new Gson().toJson(requestDto);
-        this.mockMvc.perform(get("/api/v1/anonComment/list")
+        this.mockMvc.perform(get("/api/v1/anonComment/list/"+saved.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .session(savedUserSession)
-                        .content(json)
                 ).andExpect(status().isOk())
                 .andDo(document("anonCommentGet/success",
                         operationRequestPreprocessor,
@@ -247,6 +244,7 @@ class AnonCommentControllerTest extends BaseRestDocsTest {
     }
 
     @Test
+    @DisplayName("부모댓글 한개만 있는경우도 잘 가져온다")
     void getParentCommentOnly() throws Exception {
         MockHttpSession savedUserSession = getSavedUserSession();
         CommunityUserView communityUserView = getTestUser();
@@ -263,7 +261,7 @@ class AnonCommentControllerTest extends BaseRestDocsTest {
         AnonCommentPageRequestDto requestDto = new AnonCommentPageRequestDto(saved.getId());
         String json = new Gson().toJson(requestDto);
 
-        this.mockMvc.perform(get("/api/v1/anonComment/list")
+        this.mockMvc.perform(get("/api/v1/anonComment/list/"+saved.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .session(savedUserSession)
@@ -275,6 +273,7 @@ class AnonCommentControllerTest extends BaseRestDocsTest {
     }
 
     @Test
+    @DisplayName("여러개의 자식 댓글과 함께 가져온다")
     void getParentWithMultipleChildComments() throws Exception {
         MockHttpSession savedUserSession = getSavedUserSession();
         CommunityUserView communityUserView = getTestUser();
@@ -296,7 +295,7 @@ class AnonCommentControllerTest extends BaseRestDocsTest {
         AnonCommentPageRequestDto requestDto = new AnonCommentPageRequestDto(saved.getId());
         String json = new Gson().toJson(requestDto);
 
-        this.mockMvc.perform(get("/api/v1/anonComment/list")
+        this.mockMvc.perform(get("/api/v1/anonComment/list/"+saved.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .session(savedUserSession)
@@ -319,6 +318,7 @@ class AnonCommentControllerTest extends BaseRestDocsTest {
         AnonArticle article = new AnonArticle("testAnonArticle","testContent",communityUserView);
         AnonArticle saved = articleRepository.save(article);
         ActiveAnonArticle activeAnonArticle = activeAnonArticleRepository.findById(saved.getId()).get();
+
         AnonCommentCreateRequestDto dto = new AnonCommentCreateRequestDto(saved.getId(), "commentContent");
         AnonComment comment = new AnonComment(dto.getCommentContent(),communityUserView,activeAnonArticle);
         AnonComment savedComment = commentRepository.save(comment);
@@ -340,14 +340,14 @@ class AnonCommentControllerTest extends BaseRestDocsTest {
         em.clear();
         CommentPageRequestDto requestDto = new CommentPageRequestDto(activeAnonArticle.getId());
         String requestJsonn = new Gson().toJson(requestDto);
-        this.mockMvc.perform(get("/api/v1/anonComment/list")
+        this.mockMvc.perform(get("/api/v1/anonComment/list/" +activeAnonArticle.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(requestJsonn)
+                        .session(savedUserSession)
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$[0].commentContent").value("삭제된 댓글입니다"))
-                .andExpect(jsonPath("$[0].author").doesNotExist())
+                .andExpect(jsonPath("$[0].author").isBoolean())
                 .andDo(document("commentDelete/commentDeleted",
                         operationRequestPreprocessor,
                         operationResponsePreprocessor
@@ -384,12 +384,10 @@ class AnonCommentControllerTest extends BaseRestDocsTest {
         ).andExpect(status().isOk());
         em.flush();
         em.clear();
-        CommentPageRequestDto requestDto = new CommentPageRequestDto(activeAnonArticle.getId());
-        String requestJsonn = new Gson().toJson(requestDto);
-        this.mockMvc.perform(get("/api/v1/anonComment/list")
+        this.mockMvc.perform(get("/api/v1/anonComment/list/"+activeAnonArticle.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(requestJsonn)
+                        .session(savedUserSession)
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$..childCommentList[?(@.commentContent == 'childComment2')]").doesNotExist())
@@ -428,12 +426,10 @@ class AnonCommentControllerTest extends BaseRestDocsTest {
         ).andExpect(status().isOk());
         em.flush();
         em.clear();
-        CommentPageRequestDto requestDto = new CommentPageRequestDto(activeAnonArticle.getId());
-        String requestJsonn = new Gson().toJson(requestDto);
-        this.mockMvc.perform(get("/api/v1/anonComment/list")
+        this.mockMvc.perform(get("/api/v1/anonComment/list/"+activeAnonArticle.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(requestJsonn)
+                        .session(savedUserSession)
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$..childCommentList[?(@.commentContent == 'childComment2')]").doesNotExist())
@@ -473,12 +469,11 @@ class AnonCommentControllerTest extends BaseRestDocsTest {
         ).andExpect(status().isOk());
         em.flush();
         em.clear();
-        CommentPageRequestDto requestDto = new CommentPageRequestDto(activeAnonArticle.getId());
-        String requestJsonn = new Gson().toJson(requestDto);
-        this.mockMvc.perform(get("/api/v1/anonComment/list")
+
+        this.mockMvc.perform(get("/api/v1/anonComment/list/"+activeAnonArticle.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(requestJsonn))
+                        .session(savedUserSession))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[?(@.commentContent == 'parentCommentContent')]").doesNotExist()) // 'parentCommentContent'가 존재하지 않음을 확인
                 .andExpect(jsonPath("$[0].commentContent").value("parentCommentChanged")) // 첫 번째 댓글이 'parentCommentChanged'인지 확인

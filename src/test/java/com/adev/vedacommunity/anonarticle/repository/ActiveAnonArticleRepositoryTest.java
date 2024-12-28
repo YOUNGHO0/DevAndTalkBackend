@@ -43,6 +43,8 @@ class ActiveAnonArticleRepositoryTest {
         em.flush();
         em.clear();
 
+        long originalAnonArticleSize = anonArticleRepository.count();
+        long originalActiveAnonArticleSize = activeAnonArticleRepository.count();
 
         System.out.println(communityUserViewRepository.findAll().size());
         CommunityUserView author = communityUserViewRepository.findById(saved.getId()).orElseThrow(() -> new RuntimeException("no"));
@@ -59,10 +61,9 @@ class ActiveAnonArticleRepositoryTest {
             anonArticleRepository.save(anonArticle);
         }
 
-        Assertions.assertThat(activeAnonArticleRepository.findAll().size()).isEqualTo(20);
-        Assertions.assertThat(anonArticleRepository.findAll().size()).isEqualTo(24);
-        Assertions.assertThat(anonArticleRepository.findAll().size()).isNotEqualTo(20);
 
+        Assertions.assertThat(anonArticleRepository.count()).isEqualTo(originalAnonArticleSize+24);
+        Assertions.assertThat(activeAnonArticleRepository.count()).isEqualTo(originalActiveAnonArticleSize+20);
 
 
 
