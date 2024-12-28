@@ -53,8 +53,8 @@ class ActiveAnonCommentRepositoryTest extends BaseRestDocsTest {
 
 
     );
-
-    private MockHttpSession getSavedUserSession(){
+    @Transactional
+    protected MockHttpSession getSavedUserSession(){
 
 
         CommunityUser user = new CommunityUser("test@gmail.com", "testNickname");

@@ -57,6 +57,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("local")
 @AutoConfigureRestDocs
+@Transactional
 class ArticleControllerTest {
 
 
@@ -95,7 +96,8 @@ class ArticleControllerTest {
                 .build();
     }
 
-    private MockHttpSession getSavedUserSession(){
+    @Transactional
+    protected MockHttpSession getSavedUserSession(){
 
 
         CommunityUser user = new CommunityUser("test@gmail.com", "testNickname");

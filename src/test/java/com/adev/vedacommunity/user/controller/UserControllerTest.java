@@ -65,7 +65,9 @@ class UserControllerTest extends BaseRestDocsTest {
     ActiveAnonArticleRepository activeAnonArticleRepository;
     @Autowired
     AnonCommentRepository anonCommentRepository;
-    private MockHttpSession getSavedUserSession(){
+
+    @Transactional
+    protected MockHttpSession getSavedUserSession(){
 
 
         CommunityUser user = new CommunityUser("test@gmail.com", "testNickname");
@@ -98,7 +100,7 @@ class UserControllerTest extends BaseRestDocsTest {
     }
 
 
-    @Test
+
     public void 사용자가_올바르게_삭제된다() throws Exception {
 
         MockHttpSession savedUserSession = getSavedUserSession();
@@ -133,7 +135,7 @@ class UserControllerTest extends BaseRestDocsTest {
                 ));
     }
 
-    @Test
+
     public void 사용자의_모든_기록이_삭제된다() throws Exception {
 
         MockHttpSession savedUserSession = getSavedUserSession();

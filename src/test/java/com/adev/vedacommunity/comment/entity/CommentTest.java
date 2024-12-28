@@ -30,8 +30,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("local")
+@Transactional
 class CommentTest {
 
 
@@ -53,6 +53,7 @@ class CommentTest {
     private EntityManager em;
     @Autowired
     private CommentService commentService;
+
     @Test
     public void 댓글_요청시_올바르게_댓글이_맵핑된다(){
 

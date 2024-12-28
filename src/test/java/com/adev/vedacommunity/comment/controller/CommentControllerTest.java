@@ -55,7 +55,8 @@ class CommentControllerTest extends BaseRestDocsTest {
     ActiveArticleRepository activeArticleRepository;
     @Autowired
     CommentRepository commentRepository;
-    private MockHttpSession getSavedUserSession(){
+    @Transactional
+    protected MockHttpSession getSavedUserSession(){
 
 
         CommunityUser user = new CommunityUser("test@gmail.com", "testNickname");
