@@ -58,13 +58,13 @@ spring:
             scope: email
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://${REAL_DB_HOST}:${REAL_DB_PORT}/${REAL_DB_NAME}
+    username: ${REAL_DB_USERNAME}
+    password: ${REAL_DB_PASSWORD}
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: true
 
 
