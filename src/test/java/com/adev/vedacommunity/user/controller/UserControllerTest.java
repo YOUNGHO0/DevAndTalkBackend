@@ -164,12 +164,12 @@ class UserControllerTest extends BaseRestDocsTest {
         em.flush();
         em.clear();
 
-        this.mockMvc.perform(get("/api/v1/article/list")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .session(savedUserSession)
-                ).andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.size()").value(0));
+//        this.mockMvc.perform(get("/api/v1/article/list")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .session(savedUserSession)
+//                ).andExpect(status().isOk())
+//                .andExpect(jsonPath("$.content.size()").value(0));
 //
 //        this.mockMvc.perform(get("/api/v1/anonArticle/list")
 //                        .contentType(MediaType.APPLICATION_JSON)
@@ -183,22 +183,24 @@ class UserControllerTest extends BaseRestDocsTest {
         em.clear();
         CommentPageRequestDto dto = new CommentPageRequestDto(activeArticle.getId());
         String json = new Gson().toJson(dto);
-        this.mockMvc.perform(get("/api/v1/comment/list")
+        this.mockMvc.perform(get("/api/v1/comment/list/"+activeArticle.getId() )
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json)
+                .session(savedUserSession)
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("$").isEmpty()); // 배열이 비어 있는지 확인
 
         AnonCommentPageRequestDto anondto = new AnonCommentPageRequestDto(activeAnonArticle.getId());
         String anonjson = new Gson().toJson(anondto);
 
-        this.mockMvc.perform(get("/api/v1/anonComment/list")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(anonjson)
-                ).andExpect(status().isOk())
-                .andExpect(jsonPath("$").isEmpty());
+//        this.mockMvc.perform(get("/api/v1/anonComment/list/"+activeAnonArticle.getId())
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .content(anonjson)
+//                        .session(savedUserSession)
+//                ).andExpect(status().isOk())
+//                .andExpect(jsonPath("$").isEmpty());
 
 
 

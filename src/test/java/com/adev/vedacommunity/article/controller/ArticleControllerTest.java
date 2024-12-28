@@ -153,7 +153,7 @@ class ArticleControllerTest {
     @Transactional
     void getArticle() throws Exception {
 
-        getSavedUserSession();
+        MockHttpSession savedUserSession = getSavedUserSession();
 
         RequestFieldsSnippet snippet =  requestFields(
                 fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시판 번호")
@@ -163,12 +163,10 @@ class ArticleControllerTest {
         ArticleCreateDto dto = new ArticleCreateDto("testtitle", "test content");
         Article saved = articleRepository.save(articleMapper.toArticle(dto, user));
 
-        ArticleReadDto readDto = new ArticleReadDto(saved.getId());
-        String json = new Gson().toJson(readDto);
-        this.mockMvc.perform(get("/api/v1/article")
+        this.mockMvc.perform(get("/api/v1/article/"+saved.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(json)
+                .session(savedUserSession)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("articleRead/success",
@@ -236,14 +234,12 @@ class ArticleControllerTest {
         em.flush();
         em.clear();
 
-        ArticleReadDto readDto = new ArticleReadDto(saved.getId());
-        String newjson = new Gson().toJson(readDto);
-        this.mockMvc.perform(get("/api/v1/article")
+        this.mockMvc.perform(get("/api/v1/article/"+saved.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(newjson)
+                        .session(savedUserSession)
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andDo(document("articleRead/test",
                         operationRequestPreprocessor,
                         operationResponsePreprocessor

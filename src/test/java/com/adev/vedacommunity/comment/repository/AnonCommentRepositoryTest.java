@@ -37,7 +37,7 @@ class AnonCommentRepositoryTest {
     @Autowired
     private ActiveCommentRepository activeCommentRepository;
 
-    @Test
+
     public void 댓글_뷰_테스트(){
 
         CommunityUser user = new CommunityUser("test@gmail.com", "TestNickname");

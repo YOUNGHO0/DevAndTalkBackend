@@ -96,22 +96,16 @@ class CommentTest {
 
         em.flush();
         em.clear();
-
+        long originalCommentSize = commentRepository.count();
+        long originalActiveCommentSize = activeCommentRepository.count();
         commentService.deleteComment(parentComment.getId(),communityUser);
 
         em.flush();
         em.clear();
-        Assertions.assertThat(activeCommentRepository.findAll().size()).isEqualTo(1);
-        ActiveComment savedChildComment2 = activeCommentRepository.findById(savedChildComment.getId()).get();
-        System.out.println(savedChildComment2.getParentCommentId());
+        Assertions.assertThat(activeCommentRepository.findAll().size()).isEqualTo(originalActiveCommentSize-1);
 
-        Assertions.assertThat(commentRepository.findAll().size()).isEqualTo(2);
+        Assertions.assertThat(commentRepository.findAll().size()).isEqualTo(originalCommentSize);
         Assertions.assertThat(commentRepository.findById(savedComment.getId()).isEmpty()).isEqualTo(false);
-        List<ActiveComment> all = activeCommentRepository.findAll();
-
-        for(ActiveComment s : all){
-            System.out.println(s.getCommentContent());
-        }
 
 
     }
