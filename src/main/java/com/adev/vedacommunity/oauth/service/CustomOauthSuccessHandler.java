@@ -39,16 +39,9 @@ public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
         CommunityUserView updatedCommunityUser = optionalUser.isEmpty() ? handleGuest(email): handleUser(optionalUser.get()) ;
         userService.setSession(request, updatedCommunityUser);
 
-        String refererUrl = request.getHeader("Referer");
-        System.out.println("Referer URL: " + refererUrl);
-        System.out.println("Response committed: " + response.isCommitted());
-        if (refererUrl != null) {
-            System.out.println("Redirecting to referer");
-            response.sendRedirect(refererUrl);
-        } else {
-            System.out.println("Redirecting to default URL");
-            response.sendRedirect("http://localhost:5137");
-        }
+        response.setStatus(HttpServletResponse.SC_FOUND); // 302 상태 코드
+        response.setHeader("Location", "http://localhost:5137"); // 리다이렉트 URL
+
 
 
     }
