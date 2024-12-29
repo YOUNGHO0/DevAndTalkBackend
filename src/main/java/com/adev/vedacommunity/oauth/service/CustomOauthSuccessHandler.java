@@ -40,7 +40,7 @@ public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
         userService.setSession(request, updatedCommunityUser);
 
         String refererUrl = request.getHeader("Referer");
-
+        System.out.println("refer " + refererUrl);
         if (refererUrl != null) {
             response.sendRedirect(refererUrl);
         } else {
