@@ -28,6 +28,7 @@ public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
     private final UserService userService;
     private final NicknameGenerator nicknameGenerator;
 
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
@@ -39,8 +40,8 @@ public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
         CommunityUserView updatedCommunityUser = optionalUser.isEmpty() ? handleGuest(email): handleUser(optionalUser.get()) ;
         userService.setSession(request, updatedCommunityUser);
 
-        response.setStatus(HttpServletResponse.SC_FOUND); // 302 상태 코드
-        response.setHeader("Location", "http://localhost:5137"); // 리다이렉트 URL
+        response.getWriter().write("hello");
+        response.sendRedirect("localhost:23/hello");
 
 
 
