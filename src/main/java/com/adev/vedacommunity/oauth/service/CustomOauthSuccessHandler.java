@@ -40,8 +40,7 @@ public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
         CommunityUserView updatedCommunityUser = optionalUser.isEmpty() ? handleGuest(email): handleUser(optionalUser.get()) ;
         userService.setSession(request, updatedCommunityUser);
 
-        response.getWriter().write("hello");
-        response.sendRedirect("localhost:23/hello");
+        response.sendRedirect("https://devandtalk.xyz");
 
 
 
