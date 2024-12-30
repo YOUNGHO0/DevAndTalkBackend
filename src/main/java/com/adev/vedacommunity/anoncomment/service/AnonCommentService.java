@@ -51,6 +51,10 @@ public class AnonCommentService {
         return commentList;
     }
 
+    public void deleteBy(long anonArticleId){
+        anonCommentRepository.findByAnonArticleId(anonArticleId).forEach(anonComment -> anonComment.delete());
+    }
+
     public void deleteAll(CommunityUserView user){
 
         anonCommentRepository.findByCommentAuthor(user).forEach(anonComment -> {

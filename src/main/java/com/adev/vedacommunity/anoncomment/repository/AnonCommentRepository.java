@@ -9,4 +9,5 @@ import java.util.List;
 public interface AnonCommentRepository extends JpaRepository<AnonComment, Long> {
 
     List<AnonComment> findByCommentAuthor(CommunityUserView commentAuthor);
+    List<AnonComment> findByAnonArticleId(long articleId);
 }

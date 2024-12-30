@@ -53,7 +53,7 @@ public class AnonArticleController {
 
     @DeleteMapping
     public ResponseEntity deleteAnonarticle(@Valid @RequestBody AnonArticleDeleteRequestDto deleteRequestDto,  @AuthenticationPrincipal CommunityUserView user){
-        anonArticleService.delete(deleteRequestDto.getAnonArticleId(),user);
+        anonArticleService.deleteBy(deleteRequestDto.getAnonArticleId(),user);
         return ResponseEntity.ok().build();
     };
 
