@@ -12,6 +12,7 @@ import com.adev.vedacommunity.article.repository.ArticleRepository;
 import com.adev.vedacommunity.article.service.ArticleService;
 import com.adev.vedacommunity.user.entity.CommunityUser;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +31,7 @@ public class ArticleController {
     private final ArticleMapper articleMapper;
     private final ActiveArticleRepository articleRepository;
     @PostMapping("")
-    public ResponseEntity createArticle (@RequestBody ArticleCreateDto dto, @AuthenticationPrincipal CommunityUserView communityUser) {
+    public ResponseEntity createArticle (@Valid @RequestBody ArticleCreateDto dto, @AuthenticationPrincipal CommunityUserView communityUser) {
 
         Article article = articleMapper.toArticle(dto, communityUser);
         articleService.write(article);
@@ -54,13 +55,13 @@ public class ArticleController {
     }
 
     @PatchMapping("")
-    public ResponseEntity updateArticle(@RequestBody ArticleUpdateDto dto, @AuthenticationPrincipal CommunityUserView communityUser){
+    public ResponseEntity updateArticle(@Valid @RequestBody ArticleUpdateDto dto, @AuthenticationPrincipal CommunityUserView communityUser){
         articleService.update(dto.getId(), dto.getTitle(),dto.getContent(), communityUser);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("")
-    public ResponseEntity deleteArticle(@RequestBody ArticleDeleteDto dto, @AuthenticationPrincipal CommunityUserView communityUser){
+    public ResponseEntity deleteArticle(@Valid @RequestBody ArticleDeleteDto dto, @AuthenticationPrincipal CommunityUserView communityUser){
         articleService.delete(dto.getDeleteId(), communityUser);
         return ResponseEntity.ok().build();
     }

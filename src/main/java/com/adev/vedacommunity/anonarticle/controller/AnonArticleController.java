@@ -12,6 +12,7 @@ import com.adev.vedacommunity.anonarticle.repository.ActiveAnonArticleRepository
 import com.adev.vedacommunity.anonarticle.repository.AnonArticleRepository;
 import com.adev.vedacommunity.anonarticle.service.AnonArticleService;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,14 +31,14 @@ public class AnonArticleController {
     private final ActiveAnonArticleRepository activeAnonArticleRepository;
 
     @PostMapping
-    public ResponseEntity createAnonArticle(@RequestBody AnonArticleCreateRequestDto requestDto , @AuthenticationPrincipal CommunityUserView communityUser){
+    public ResponseEntity createAnonArticle(@Valid @RequestBody AnonArticleCreateRequestDto requestDto , @AuthenticationPrincipal CommunityUserView communityUser){
         AnonArticle anonArticle = anonArticleMapper.toAnonArticle(requestDto, communityUser);
         anonArticleService.create(anonArticle);
         return ResponseEntity.ok().build();
     };
 
     @GetMapping
-    public ResponseEntity readAnonArticle(@RequestBody AnonArticleReadRequestDto requestDto ,@AuthenticationPrincipal CommunityUserView user){
+    public ResponseEntity readAnonArticle(@Valid @RequestBody AnonArticleReadRequestDto requestDto ,@AuthenticationPrincipal CommunityUserView user){
         ActiveAnonArticle read = anonArticleService.read(requestDto.getAnonArticleId());
         AnonArticleReadResponseDto readDto = anonArticleMapper.toReadDto(read,user);
 
@@ -45,13 +46,13 @@ public class AnonArticleController {
     };
 
     @PatchMapping
-    public ResponseEntity updateAnonArticle(@RequestBody AnonArticleUpdateRequestDto requestDto, @AuthenticationPrincipal CommunityUserView user){
+    public ResponseEntity updateAnonArticle(@Valid @RequestBody AnonArticleUpdateRequestDto requestDto, @AuthenticationPrincipal CommunityUserView user){
         anonArticleService.update(requestDto.getId(),requestDto.getTitle(),requestDto.getContent(),user);
         return ResponseEntity.ok().build();
     };
 
     @DeleteMapping
-    public ResponseEntity deleteAnonarticle(@RequestBody AnonArticleDeleteRequestDto deleteRequestDto,  @AuthenticationPrincipal CommunityUserView user){
+    public ResponseEntity deleteAnonarticle(@Valid @RequestBody AnonArticleDeleteRequestDto deleteRequestDto,  @AuthenticationPrincipal CommunityUserView user){
         anonArticleService.delete(deleteRequestDto.getAnonArticleId(),user);
         return ResponseEntity.ok().build();
     };

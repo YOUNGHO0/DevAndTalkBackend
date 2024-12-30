@@ -17,6 +17,7 @@ import com.adev.vedacommunity.article.entity.ActiveArticle;
 import com.adev.vedacommunity.article.service.ArticleService;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
 import com.adev.vedacommunity.user.mapper.CommunityUserMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,7 +39,7 @@ public class AnonCommentController {
     private final ActiveAnonArticleRepository activeAnonArticleRepository;
 
     @PostMapping
-    public ResponseEntity creatComment(@RequestBody AnonCommentCreateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
+    public ResponseEntity creatComment(@Valid @RequestBody AnonCommentCreateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
 
         ActiveAnonArticle article = articleService.read(dto.getArticleId());
         AnonComment AnonComment = anonCommentMapper.toComment(dto.getCommentContent(), user, article);
@@ -47,7 +48,7 @@ public class AnonCommentController {
     }
 
     @PostMapping("/child")
-    public ResponseEntity createChildComment(@RequestBody AnonChildCreateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
+    public ResponseEntity createChildComment(@Valid @RequestBody AnonChildCreateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
 
         AnonComment parentComment =  anonCommentRepository.findById(dto.getParentId()).orElseThrow(() -> new RuntimeException("No AnonComment found"));
         AnonComment childComment = anonCommentMapper.toChildComment(dto, parentComment, user, parentComment.getArticle());
@@ -135,19 +136,19 @@ public class AnonCommentController {
     }
 
     @GetMapping
-    public ResponseEntity getComments(@RequestBody AnonCommentReadRequestDto dto){
+    public ResponseEntity getComments(@Valid @RequestBody AnonCommentReadRequestDto dto){
         ActiveAnonComment AnonComment = anonCommentService.readComment(dto.getCommentId());
         AnonCommentReadResponseDto anonCommentReadResponseDto = anonCommentMapper.toDto(AnonComment);
         return ResponseEntity.ok(anonCommentReadResponseDto);
     }
     @PatchMapping
-    public ResponseEntity updateComment(@RequestBody AnonCommentUpdateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
+    public ResponseEntity updateComment(@Valid @RequestBody AnonCommentUpdateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
 
         anonCommentService.updateComment(dto.getCommentId(),dto.getContent(),user);
         return ResponseEntity.ok().build();
     }
     @DeleteMapping
-    public ResponseEntity deleteComment(@RequestBody AnonCommentDeleteRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
+    public ResponseEntity deleteComment(@Valid @RequestBody AnonCommentDeleteRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
         anonCommentService.deleteComment(dto.getCommentId(),user);
         return ResponseEntity.ok().build();
     }
