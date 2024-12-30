@@ -46,6 +46,10 @@ public class CommentService {
         });
     }
 
+    public void deleteAllByArticleId(long articleId){
+        commentRepository.findByArticleId(articleId).forEach(comment -> comment.delete() );
+    }
+
     public List<ActiveComment> getCommentList(long articleId){
         List<ActiveComment> commentList = activeCommentRepository.findAllByArticleId(articleId);
         return commentList;
