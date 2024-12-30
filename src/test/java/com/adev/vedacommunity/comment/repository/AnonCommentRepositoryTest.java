@@ -1,5 +1,11 @@
 package com.adev.vedacommunity.comment.repository;
 
+import com.adev.vedacommunity.anonarticle.entity.ActiveAnonArticle;
+import com.adev.vedacommunity.anonarticle.entity.AnonArticle;
+import com.adev.vedacommunity.anonarticle.repository.ActiveAnonArticleRepository;
+import com.adev.vedacommunity.anonarticle.repository.AnonArticleRepository;
+import com.adev.vedacommunity.anoncomment.entity.AnonComment;
+import com.adev.vedacommunity.anoncomment.repository.AnonCommentRepository;
 import com.adev.vedacommunity.article.entity.ActiveArticle;
 import com.adev.vedacommunity.article.entity.Article;
 import com.adev.vedacommunity.article.repository.ActiveArticleRepository;
@@ -36,7 +42,12 @@ class AnonCommentRepositoryTest {
     private EntityManager em;
     @Autowired
     private ActiveCommentRepository activeCommentRepository;
-
+    @Autowired
+    private AnonArticleRepository anonArticleRepository;
+    @Autowired
+    private AnonCommentRepository anonCommentRepository;
+    @Autowired
+    private ActiveAnonArticleRepository activeAnonArticleRepository;
 
     public void 댓글_뷰_테스트(){
 
@@ -56,5 +67,27 @@ class AnonCommentRepositoryTest {
         Assertions.assertThat(commentRepository.findAll().size()).isEqualTo(activeCommentRepository.findAll().size());
 
     }
+
+    @Test
+    public void findByArticleID_테스트(){
+
+        CommunityUser user = new CommunityUser("test@gmail.com", "TestNickname");
+        CommunityUser savedCommunityUser = communityUserRepository.save(user);
+        CommunityUserView view = communityUserViewRepository.findById(savedCommunityUser.getId()).get();
+
+
+        AnonArticle anonArticle = new AnonArticle("익명 게시판", "익명 게시판 내용",view);
+        AnonArticle savedAnonArticle = anonArticleRepository.save(anonArticle);
+        ActiveAnonArticle activeAnonArticle = activeAnonArticleRepository.findById(savedAnonArticle.getId()).get();
+
+        for(int i =0; i<4; i++){
+            anonCommentRepository.save(new AnonComment("testComment"+ i,view,activeAnonArticle));
+        }
+
+        Assertions.assertThat(anonCommentRepository.findByAnonArticleId(savedAnonArticle.getId()).size()).isEqualTo(4);
+
+
+    }
+
 
 }
