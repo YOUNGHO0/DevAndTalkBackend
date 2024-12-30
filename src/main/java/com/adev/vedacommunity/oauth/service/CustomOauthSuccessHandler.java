@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -28,6 +29,8 @@ public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
     private final UserService userService;
     private final NicknameGenerator nicknameGenerator;
 
+    @Value("${AFTER_LOGIN_URL}")
+    private String afterLoginUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -40,7 +43,7 @@ public class CustomOauthSuccessHandler implements AuthenticationSuccessHandler {
         CommunityUserView updatedCommunityUser = optionalUser.isEmpty() ? handleGuest(email): handleUser(optionalUser.get()) ;
         userService.setSession(request, updatedCommunityUser);
 
-        response.sendRedirect("https://devandtalk.xyz");
+        response.sendRedirect(afterLoginUrl);
 
 
 
