@@ -2,7 +2,6 @@
 
 
     import com.adev.vedacommunity.anonarticle.entity.ActiveAnonArticle;
-    import com.adev.vedacommunity.article.entity.ActiveArticle;
     import com.adev.vedacommunity.logging.BaseTimeEntity;
     import com.adev.vedacommunity.user.entity.CommunityUserView;
     import jakarta.persistence.*;
@@ -38,15 +37,15 @@
         public AnonComment() {
         }
 
-        public AnonComment(String commentContent, CommunityUserView commentAuthor, ActiveAnonArticle article ){
+        public AnonComment(String commentContent, CommunityUserView commentAuthor, ActiveAnonArticle anonArticle){
             this.commentContent = commentContent;
             this.commentAuthor = commentAuthor;
-            this.article = article;
+            this.anonArticle = anonArticle;
         }
-        public AnonComment(String commentContent, CommunityUserView commentAuthor, ActiveAnonArticle article, AnonComment parentComment ){
+        public AnonComment(String commentContent, CommunityUserView commentAuthor, ActiveAnonArticle anonArticle, AnonComment parentComment ){
             this.commentContent = commentContent;
             this.commentAuthor = commentAuthor;
-            this.article = article;
+            this.anonArticle = anonArticle;
             this.parentComment = parentComment;
         }
 
@@ -82,7 +81,7 @@
         @ManyToOne(fetch = FetchType.LAZY)
         CommunityUserView commentAuthor;
         @ManyToOne(fetch = FetchType.LAZY)
-        ActiveAnonArticle article;
+        ActiveAnonArticle anonArticle;
         @ManyToOne(fetch = FetchType.LAZY)
         AnonComment parentComment;
 

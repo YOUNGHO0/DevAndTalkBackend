@@ -13,7 +13,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AnonCommentMapper {
 
-    @Mapping(target = "articleId", source = "AnonComment.article.id")
+    @Mapping(target = "articleId", source = "AnonComment.anonArticle.id")
     AnonCommentReadResponseDto toDto(ActiveAnonComment AnonComment);
     default AnonComment toComment(String commentContent, CommunityUserView commentAuthor, ActiveAnonArticle article){
         return new AnonComment(commentContent,commentAuthor,article);

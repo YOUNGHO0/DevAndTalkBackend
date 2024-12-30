@@ -42,7 +42,7 @@ public class ActiveAnonComment extends BaseTimeEntity {
     CommunityUserView commentAuthor;
     String commentContent;
     @ManyToOne
-    ActiveArticle article;
+    ActiveArticle anonArticle;
     @ManyToOne
     ActiveAnonComment parentComment;
     @Column(name = "parent_comment_id", insertable = false, updatable = false) // 외래 키 값 직접 접근

@@ -47,7 +47,7 @@ public class AnonCommentService {
     }
 
     public List<ActiveAnonComment> getCommentList(long articleId){
-        List<ActiveAnonComment> commentList = activeAnonCommentRepository.findAllByArticleId(articleId);
+        List<ActiveAnonComment> commentList = activeAnonCommentRepository.findAllByAnonArticleId(articleId);
         return commentList;
     }
 

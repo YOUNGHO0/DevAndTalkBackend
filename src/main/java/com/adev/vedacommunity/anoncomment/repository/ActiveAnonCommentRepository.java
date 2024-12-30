@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ActiveAnonCommentRepository extends JpaRepository<ActiveAnonComment, Long> {
 
-    List<ActiveAnonComment> findAllByArticleId(Long articleID);
+    List<ActiveAnonComment> findAllByAnonArticleId(Long articleID);
 
 }

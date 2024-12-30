@@ -1,7 +1,6 @@
 package com.adev.vedacommunity.anoncomment.controller;
 
 import com.adev.vedacommunity.anonarticle.entity.ActiveAnonArticle;
-import com.adev.vedacommunity.anonarticle.entity.AnonArticle;
 import com.adev.vedacommunity.anonarticle.repository.ActiveAnonArticleRepository;
 import com.adev.vedacommunity.anonarticle.service.AnonArticleService;
 import com.adev.vedacommunity.anoncomment.dto.read.AnonCommentDto;
@@ -13,8 +12,6 @@ import com.adev.vedacommunity.anoncomment.mapper.AnonCommentMapper;
 import com.adev.vedacommunity.anoncomment.repository.ActiveAnonCommentRepository;
 import com.adev.vedacommunity.anoncomment.repository.AnonCommentRepository;
 import com.adev.vedacommunity.anoncomment.service.AnonCommentService;
-import com.adev.vedacommunity.article.entity.ActiveArticle;
-import com.adev.vedacommunity.article.service.ArticleService;
 import com.adev.vedacommunity.user.entity.CommunityUserView;
 import com.adev.vedacommunity.user.mapper.CommunityUserMapper;
 import jakarta.validation.Valid;
@@ -51,7 +48,7 @@ public class AnonCommentController {
     public ResponseEntity createChildComment(@Valid @RequestBody AnonChildCreateRequestDto dto, @AuthenticationPrincipal CommunityUserView user){
 
         AnonComment parentComment =  anonCommentRepository.findById(dto.getParentId()).orElseThrow(() -> new RuntimeException("No AnonComment found"));
-        AnonComment childComment = anonCommentMapper.toChildComment(dto, parentComment, user, parentComment.getArticle());
+        AnonComment childComment = anonCommentMapper.toChildComment(dto, parentComment, user, parentComment.getAnonArticle());
         anonCommentService.createComment(childComment);
         return ResponseEntity.ok().build();
     }
